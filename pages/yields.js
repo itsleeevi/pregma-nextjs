@@ -12,7 +12,7 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import YieldsBg from "../components/YieldsBg";
 
-export default function Home() {
+function Yields() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [connected, setConnected] = useState(false);
   const [value, setValue] = useState("one");
@@ -225,3 +225,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Yields;
