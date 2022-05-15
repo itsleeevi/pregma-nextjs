@@ -20,7 +20,7 @@ const Bank = () => {
   return (
     <>
       <Head>
-        <title>Inverted Finance</title>
+        <title>Bank | Inverted Finance</title>
         <meta name="description" content="Earn 2% daily staking $pumpkin" />
         <link rel="icon" href="/favicon.ico" />
 
@@ -131,7 +131,7 @@ const Bank = () => {
             </div>
           </main>
         </div>
-      </div>{" "}
+      </div>
     </>
   );
 };
