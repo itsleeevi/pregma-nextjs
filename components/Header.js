@@ -46,7 +46,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-lg">PREGMA</span>
+              <span className="text-lg">PUMPKIN</span>
             </button>
             {connected ? (
               <>

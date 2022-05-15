@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import Head from "next/head";
 
 import { PregmaContext } from "../contexts/PregmaContext";
 
