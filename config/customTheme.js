@@ -9,7 +9,7 @@ const customTheme = {
       background: "000",
     },
     font: {
-      family: "Inter",
+      family: "Inter, sans-serif",
       color: "#fff",
     },
     colors: {
