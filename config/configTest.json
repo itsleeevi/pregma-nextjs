@@ -1,0 +1,11 @@
+{
+  "CHAIN_ID": "0xfa2",
+  "CHAIN_ID_DEC": "4002",
+  "CHAIN_NAME": "Fantom Test",
+  "CURRENCY_NAME:": "FTM",
+  "CURRENCY_SYMBOL": "FTM",
+  "RPC": "https://rpc.testnet.fantom.network",
+  "BLOCK_EXPLORER": "https://testnet.ftmscan.com",
+  "STAKING_ADDRESS": "0xaafde753Db264C1283BdcA5C5ed540Ecc111C36D",
+  "TOKEN_ADDRESS": "0x90826Bd6eb146837c7FE6f3517AD8A9993714fef"
+}

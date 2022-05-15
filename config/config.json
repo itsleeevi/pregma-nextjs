@@ -1,0 +1,11 @@
+{
+  "CHAIN_ID": "0xfa",
+  "CHAIN_ID_DEC": "250",
+  "CHAIN_NAME": "Fantom Opera",
+  "CURRENCY_NAME:": "FTM",
+  "CURRENCY_SYMBOL": "FTM",
+  "RPC": "https://rpc.ftm.tools",
+  "BLOCK_EXPLORER": "https://ftmscan.com/",
+  "STAKING_ADDRESS": "",
+  "TOKEN_ADDRESS": ""
+}

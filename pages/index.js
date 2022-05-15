@@ -7,16 +7,30 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { PregmaContext } from "../contexts/PregmaContext";
+import { Box, Grommet, Stack, TextInput, Text } from "grommet";
+import { deepMerge } from "grommet/utils";
+import { grommet } from "grommet/themes";
 
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import YieldsBg from "../components/YieldsBg";
+import customTheme from "../config/customTheme";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [connected, setConnected] = useState(false);
-  const [value, setValue] = useState("one");
-  const { AOS } = useContext(PregmaContext);
+  const {
+    AOS,
+    connected,
+    connectMetaMask,
+    approve,
+    isApproved,
+    stake,
+    unstake,
+    getMaxStaking,
+    getMaxUnstaking,
+  } = useContext(PregmaContext);
+  const [amount, setAmount] = useState(undefined);
+  const [value, setValue] = useState("stake"); // stake || unstake
 
   useEffect(() => {
     AOS.init({
@@ -25,9 +39,15 @@ export default function Home() {
       duration: 750,
       easing: "ease-out-quart",
     });
+    console.log(value);
   }, []);
 
+  useEffect(() => {
+    setAmount(undefined);
+  }, [value]);
+
   const handleChange = (event, newValue) => {
+    //event.preventDefault();
     setValue(newValue);
   };
 
@@ -46,6 +66,85 @@ export default function Home() {
     },
   });
 
+  const StatsTop = () => {
+    return (
+      <>
+        <div className="grid lg:grid-cols-3 sm:grid-cols-1 lg:text-center sm:text-start ">
+          <div>
+            <h1 className="text-2xl text-gray-800 font-medium">APY</h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">200.1%</h1>
+          </div>
+          <div>
+            <h1 className="text-2xl text-gray-800 font-medium">
+              Total Value Deposited
+            </h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">$60,750,176</h1>
+          </div>
+          <div>
+            <h1 className="text-2xl text-gray-800 font-medium">
+              Current Index
+            </h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">8.89 PUMPKIN</h1>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const StatsBottom = () => {
+    return (
+      <>
+        <div className="mt-6 flex flex-col w-full">
+          <div className="flex flex-row w-full justify-between text-xl text-gray-800">
+            <p>Your Balance</p>
+            <p>0.0 PUMPKIN</p>
+          </div>
+          <div className="flex flex-row w-full justify-between text-xl text-gray-800">
+            <p>Your Staked Balance</p>
+            <p>0 sPUMPKIN</p>
+          </div>
+          <div className="flex flex-row w-full justify-between text-xl text-gray-800">
+            <p>Next Reward Amount</p>
+            <p>0.0 sPUMPKIN</p>
+          </div>
+          <div className="flex flex-row w-full justify-between text-xl text-gray-800">
+            <p>Next Reward Yield</p>
+            <p>0.0972%</p>
+          </div>
+          <div className="flex flex-row w-full justify-between text-xl text-gray-800">
+            <p>ROI (5-Day Rate)</p>
+            <p>1.4692%</p>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const Approval = () => {
+    return (
+      <>
+        <div className="mt-6 flex flex-row w-full">
+          <div className="text-gray-800 text-lg leading-none italic text-center justify-center basis-3/4 w-full">
+            <p>
+              First time staking PUMPKIN? <br /> Please approve PUMPKIN Yields
+              to use your PUMPKIN for staking.
+            </p>
+          </div>
+
+          <button
+            className="basis-1/4 hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border- 2 border-transparent rounded h-auto w-full"
+            onClick={(e) => {
+              e.preventDefault();
+              approve();
+            }}
+          >
+            Approve
+          </button>
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className="bg-gray-900 flex h-screen overflow-hidden">
       {/* Sidebar */}
@@ -57,8 +156,8 @@ export default function Home() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <main>
-          <div className="absolute flex inset-0 items-center justify-center">
-            <div className="max-w mx-auto my-auto px-4 sm:px-6">
+          <div className="absolute flex inset-0 justify-center">
+            <div className="max-w mx-auto  px-4 sm:px-6">
               <div className="pb-12 md:pb-20">
                 {/* Section header */}
                 <div className="text-center pb-12 md:pb-6">
@@ -90,126 +189,199 @@ export default function Home() {
                               </h6>
                             </div>
                           </div>
-                          <div className="grid lg:grid-cols-3 sm:grid-cols-1 lg:text-center sm:text-start ">
-                            <div>
-                              <h1 className="text-2xl text-gray-800 font-medium">
-                                APY
-                              </h1>
-                              <h1 className="text-2xl text-cyan-500 font-medium">
-                                200.1%
-                              </h1>
-                            </div>
-                            <div>
-                              <h1 className="text-2xl text-gray-800 font-medium">
-                                Total Value Deposited
-                              </h1>
-                              <h1 className="text-2xl text-cyan-500 font-medium">
-                                $60,750,176
-                              </h1>
-                            </div>
-                            <div>
-                              <h1 className="text-2xl text-gray-800 font-medium">
-                                Current Index
-                              </h1>
-                              <h1 className="text-2xl text-cyan-500 font-medium">
-                                8.89 PREGMA
-                              </h1>
-                            </div>
-                          </div>
+                          <StatsTop />
                           <div className="flex flex-col items-center">
                             <>
-                              {/* <button
-                      className="bg-transparent hover:bg-blue-900 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-blue-900 hover:border-transparent rounded w-1/4 mb-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setConnected(true);
-                      }}
-                    >
-                      Connect Wallet
-                    </button>
-                    <h6 className="text-xs  text-gray-800">
-                      Connect your wallet to stake PREGMA
-                    </h6>*/}
-                              <div className="text-sm font-medium text-center text-gray-500  dark:text-gray-400 dark:border-gray-700">
-                                <ThemeProvider theme={theme}>
-                                  <Tabs
-                                    value={value}
-                                    onChange={handleChange}
-                                    indicatorColor="primary"
-                                    aria-label="secondary tabs example"
+                              {!connected ? (
+                                <>
+                                  <button
+                                    className="bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      connectMetaMask();
+                                    }}
                                   >
-                                    <Tab
-                                      sx={{
-                                        display: "inline",
-                                        fontWeight: "medium",
-                                        fontSize: 20,
-                                        textTransform: "none",
-                                      }}
-                                      value="one"
-                                      icon={
-                                        <h1 className="text-custom-100">
-                                          Stake
-                                        </h1>
-                                      }
-                                    />
-                                    <Tab
-                                      sx={{
-                                        display: "inline",
-                                        fontWeight: "medium",
-                                        fontSize: 20,
-                                        textTransform: "none",
-                                      }}
-                                      value="two"
-                                      icon={
-                                        <h1 className="text-custom-100">
-                                          Unstake
-                                        </h1>
-                                      }
-                                    />
-                                  </Tabs>
-                                </ThemeProvider>
-                              </div>
-                              <div className="mt-6 flex flex-row w-full">
-                                <div className="text-gray-800 text-lg leading-none italic text-center justify-center basis-3/4 w-full">
-                                  <p>
-                                    First time staking PREGMA? <br /> Please
-                                    approve Pregma Yields to use your PREGMA for
-                                    staking.
-                                  </p>
-                                </div>
+                                    <h1 className="text-lg">Connect Wallet</h1>
+                                  </button>
+                                  <h6 className="text-xs text-gray-800 mt-4">
+                                    Connect your wallet to stake PUMPKIN
+                                  </h6>
+                                </>
+                              ) : (
+                                <>
+                                  <>
+                                    <div className="text-sm font-medium text-center text-gray-500  dark:text-gray-400 dark:border-gray-700">
+                                      <ThemeProvider theme={theme}>
+                                        <Tabs
+                                          value={value}
+                                          onChange={handleChange}
+                                          indicatorColor="primary"
+                                          aria-label="secondary tabs example"
+                                        >
+                                          <Tab
+                                            value="stake"
+                                            sx={{
+                                              display: "inline",
+                                              fontWeight: "medium",
+                                              fontSize: 20,
+                                              textTransform: "none",
+                                            }}
+                                            icon={
+                                              <h1 className="text-custom-100">
+                                                Stake
+                                              </h1>
+                                            }
+                                          />
+                                          <Tab
+                                            value="unstake"
+                                            sx={{
+                                              display: "inline",
+                                              fontWeight: "medium",
+                                              fontSize: 20,
+                                              textTransform: "none",
+                                            }}
+                                            icon={
+                                              <h1 className="text-custom-100">
+                                                Unstake
+                                              </h1>
+                                            }
+                                          />
+                                        </Tabs>
+                                      </ThemeProvider>
+                                    </div>
+                                  </>
+                                  {!isApproved ? (
+                                    <Approval />
+                                  ) : (
+                                    <>
+                                      <div className="flex flex-row justify-between mt-4 gap-2 w-full rounded">
+                                        {value === "stake" ? (
+                                          <>
+                                            <Box width="full" round="large">
+                                              <Grommet
+                                                theme={customTheme}
+                                                style={{
+                                                  backgroundColor: "#111",
+                                                  color: "#fff",
+                                                }}
+                                                round="large"
+                                              >
+                                                <div className="rounded  shadow-xl shadow-cyan-500/90">
+                                                  <Stack
+                                                    anchor="right"
+                                                    round="large"
+                                                  >
+                                                    <Box round="large">
+                                                      <TextInput
+                                                        size="medium"
+                                                        placeholder="amount"
+                                                        value={amount}
+                                                        onChange={(event) => {
+                                                          event.preventDefault();
+                                                          setAmount(
+                                                            event.target.value
+                                                          );
+                                                        }}
+                                                        reverse
+                                                      />
+                                                    </Box>
+                                                    <Box
+                                                      onClick={async () => {
+                                                        setAmount(
+                                                          await getMaxStaking()
+                                                        );
+                                                      }}
+                                                      margin={{ right: "10px" }}
+                                                    >
+                                                      <Text
+                                                        className="font-bold"
+                                                        size="small"
+                                                      >
+                                                        Max
+                                                      </Text>
+                                                    </Box>
+                                                  </Stack>
+                                                </div>
+                                              </Grommet>
+                                            </Box>
+                                            <button
+                                              className="w-1/4 hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
+                                              onClick={async (e) => {
+                                                e.preventDefault();
+                                                await stake(amount);
+                                                setAmount(undefined);
+                                              }}
+                                            >
+                                              Stake
+                                            </button>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Box width="full" round="large">
+                                              <Grommet
+                                                theme={customTheme}
+                                                style={{
+                                                  backgroundColor: "#111",
+                                                  color: "#fff",
+                                                }}
+                                                round="large"
+                                              >
+                                                <div className="rounded  shadow-xl shadow-cyan-500/90">
+                                                  <Stack
+                                                    anchor="right"
+                                                    round="large"
+                                                  >
+                                                    <Box round="large">
+                                                      <TextInput
+                                                        size="medium"
+                                                        placeholder="amount"
+                                                        value={amount}
+                                                        onChange={(event) =>
+                                                          setAmount(
+                                                            event.target.value
+                                                          )
+                                                        }
+                                                        reverse
+                                                      />
+                                                    </Box>
+                                                    <Box
+                                                      onClick={async () => {
+                                                        setAmount(
+                                                          await getMaxUnstaking()
+                                                        );
+                                                      }}
+                                                      margin={{ right: "10px" }}
+                                                    >
+                                                      <Text
+                                                        className="font-bold"
+                                                        size="small"
+                                                      >
+                                                        Max
+                                                      </Text>
+                                                    </Box>
+                                                  </Stack>
+                                                </div>
+                                              </Grommet>
+                                            </Box>
+                                            <button
+                                              className="w-1/4 hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
+                                              onClick={async (e) => {
+                                                e.preventDefault();
+                                                await unstake(amount);
+                                                setAmount(undefined);
+                                              }}
+                                            >
+                                              Unstake
+                                            </button>
+                                          </>
+                                        )}
+                                      </div>
+                                    </>
+                                  )}
 
-                                <button
-                                  className="basis-1/4 hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border- 2 border-transparent rounded h-auto w-full"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setConnected(true);
-                                  }}
-                                >
-                                  Approve
-                                </button>
-                              </div>
-                              <div className="mt-6 flex flex-col w-full">
-                                <div className="flex flex-row w-full justify-between text-xl text-gray-800">
-                                  <p>Your Balance</p>
-                                  <p>0.0 PREGMA</p>
-                                </div>
-                                <div className="flex flex-row w-full justify-between text-xl text-gray-800">
-                                  <p>Your Staked Balance</p>
-                                  <p>0 sPREGMA</p>
-                                </div>
-                                <div className="flex flex-row w-full justify-between text-xl text-gray-800">
-                                  <p>Next Reward Amount</p>
-                                  <p>0.0 sPREGMA</p>
-                                </div>
-                                <div className="flex flex-row w-full justify-between text-xl text-gray-800">
-                                  <p>Next Reward Yield</p>
-                                  <p>0.0972%</p>
-                                </div>
-                                <div className="flex flex-row w-full justify-between text-xl text-gray-800">
-                                  <p>ROI (5-Day Rate)</p>
-                                  <p>1.4692%</p>
-                                </div>
-                              </div>
+                                  <StatsBottom />
+                                </>
+                              )}
                             </>
                           </div>
                         </div>

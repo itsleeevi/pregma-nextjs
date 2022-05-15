@@ -102,9 +102,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </Link>
           </div>
 
-          <h1 className="text-gray-900 text-3xl font-extrabold self-center">
+          <h1 className="text-gray-900 text-2xl font-extrabold self-center">
             <Link href="/" className="block">
-              Pregma Yields
+              Inverted Finance
             </Link>
           </h1>
         </div>
@@ -117,14 +117,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               {/* Yields */}
               <li
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-                  router.pathname.includes("yields") &&
-                  "bg-gray-900 text-gray-800"
+                  router.pathname === "/" && "bg-gray-900 text-gray-800"
                 }`}
               >
                 <Link
-                  href="/yields"
+                  href="/"
                   className={`block text-gray-900  truncate transition duration-150 ${
-                    router.pathname.includes("yields") && "text-gray-800"
+                    router.pathname === "/" && "text-gray-800"
                   }`}
                 >
                   <div

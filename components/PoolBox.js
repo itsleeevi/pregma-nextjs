@@ -13,7 +13,7 @@ const PoolBox = () => {
         data-aos="zoom-in"
       >
         <div className="flex flex-row justify-between gap-10">
-          <Image src={Waterfall} height="60px" width="60px" />
+          <Image src={Waterfall} layout="fixed" height="60px" width="60px" />
           <div className="place-end ">
             <h3 className="text-custom-100 font-bold text-2xl tracking-wider">
               WATERFALL

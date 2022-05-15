@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { PregmaContext } from "../contexts/PregmaContext";
 
 function Header({ sidebarOpen, setSidebarOpen }) {
+  const { connectMetaMask, connected, disconnectMetaMask } =
+    useContext(PregmaContext);
+
   return (
     <header className="sticky top-0 bg-gray-900 z-30">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -42,11 +46,33 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>PREGMA</span>
+              <span className="text-lg">PREGMA</span>
             </button>
-            <button className="bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded">
-              Connect Wallet
-            </button>
+            {connected ? (
+              <>
+                <button
+                  className="bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    disconnectMetaMask();
+                  }}
+                >
+                  <h1 className="text-lg">Disconnect</h1>
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    connectMetaMask();
+                  }}
+                >
+                  <h1 className="text-lg">Connect Wallet</h1>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
