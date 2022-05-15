@@ -24,6 +24,9 @@ function MyApp({ Component, pageProps }) {
   const [isApproved, setIsApproved] = useState(false);
 
   const connectMetaMask = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
     if (window.ethereum && window.ethereum.isConnected) {
       const accs = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -43,6 +46,9 @@ function MyApp({ Component, pageProps }) {
   };
 
   const approve = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
     await tokenContract.methods
       .approve(
         CONFIG.STAKING_ADDRESS,
@@ -52,24 +58,36 @@ function MyApp({ Component, pageProps }) {
   };
 
   const stake = async (amount) => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
     await stakingContract.methods
       .Stake(web3.utils.toWei(amount.toString(), "ether"))
       .send({ from: accounts[0] });
   };
 
   const unstake = async (amount) => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
     await stakingContract.methods
       .Unstake(web3.utils.toWei(amount.toString(), "ether"))
       .send({ from: accounts[0] });
   };
 
   const getMaxStaking = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
     const result = await tokenContract.methods.balanceOf(accounts[0]).call();
 
     return web3.utils.fromWei(result.toString(), "ether");
   };
 
   const getMaxUnstaking = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
     const result = await stakingContract.methods
       .GetCurrentStake(accounts[0])
       .call();
@@ -77,23 +95,62 @@ function MyApp({ Component, pageProps }) {
     return web3.utils.fromWei(result.toString(), "ether");
   };
 
-  useEffect(() => {
-    setIsApproved(false);
-    console.log();
-    const isApproved = async () => {
-      await tokenContract.methods
-        .allowance(accounts[0], CONFIG.STAKING_ADDRESS)
-        .call()
-        .then((result) => {
-          console.log(result);
-          if (Number(result) === 0) {
-            setIsApproved(false);
-          } else setIsApproved(true);
+  const switchNetwork = async () => {
+    if (window.ethereum && window.ethereum.isConnected) {
+      try {
+        await ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: CONFIG.CHAIN_ID }],
         });
-    };
+      } catch (error) {
+        if (error.code === 4902) {
+          try {
+            await ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: CONFIG.CHAIN_ID,
+                  chainName: CONFIG.CHAIN_NAME,
+                  nativeCurrency: {
+                    name: CONFIG.CURRENCY_NAME,
+                    symbol: CONFIG.CURRENCY_SYMBOL,
+                    decimals: 18,
+                  },
+                  rpcUrls: [CONFIG.RPC],
+                  blockExplorerUrls: [CONFIG.BLOCK_EXPLORER],
+                  iconUrls: [""],
+                },
+              ],
+            });
+          } catch (addError) {
+            console.log("Did not add network");
+          }
+        }
+      }
+    }
+  };
 
-    if (tokenContract && accounts.length > 0) {
-      isApproved();
+  useEffect(() => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    } else {
+      setIsApproved(false);
+      console.log();
+      const isApproved = async () => {
+        await tokenContract.methods
+          .allowance(accounts[0], CONFIG.STAKING_ADDRESS)
+          .call()
+          .then((result) => {
+            console.log(result);
+            if (Number(result) === 0) {
+              setIsApproved(false);
+            } else setIsApproved(true);
+          });
+      };
+
+      if (tokenContract && accounts.length > 0) {
+        isApproved();
+      }
     }
   }, [accounts, tokenContract]);
 
