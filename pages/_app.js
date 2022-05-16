@@ -23,6 +23,15 @@ function MyApp({ Component, pageProps }) {
   const [tokenContract, setTokenContract] = useState(undefined);
   const [isApproved, setIsApproved] = useState(false);
 
+  const [totalStaked, setTotalStaked] = useState(undefined);
+  const [index, setIndex] = useState(undefined);
+  const [apy, setApy] = useState(undefined);
+  const [yourBalance, setYourBalance] = useState(undefined);
+  const [yourStakedBalance, setYourStakedBalance] = useState(undefined);
+  const [nextRewardAmount, setNextRewardAmount] = useState(undefined);
+  const [nextRewardYield, setNextRewardYield] = useState(undefined);
+  const [nextRewardROIFiveDays, setNextRewardROIFiveDays] = useState(undefined);
+
   const connectMetaMask = async () => {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
@@ -55,6 +64,7 @@ function MyApp({ Component, pageProps }) {
         await tokenContract.methods.totalSupply().call()
       )
       .send({ from: accounts[0] });
+    setIsApproved(true);
   };
 
   const stake = async (amount) => {
@@ -95,6 +105,64 @@ function MyApp({ Component, pageProps }) {
     return web3.utils.fromWei(result.toString(), "ether");
   };
 
+  const TotalStaked = async () => {
+    const result = await stakingContract.methods.totalStaked().call();
+
+    setTotalStaked(web3.utils.fromWei(result.toString(), "ether"));
+  };
+
+  const Index = async () => {
+    const result = await stakingContract.methods.CalculateIndex().call();
+    setIndex(web3.utils.fromWei(result.toString(), "ether"));
+  };
+
+  const APY = async () => {
+    const dailyRewardRate = await stakingContract.methods.RewardFactor().call();
+
+    setApy((dailyRewardRate / 100) * 365 * 100);
+  };
+
+  const YourBalance = async () => {
+    const result = await tokenContract.methods.balanceOf(accounts[0]).call();
+    setYourBalance(web3.utils.fromWei(result.toString(), "ether"));
+  };
+
+  const YourStakedBalance = async () => {
+    const result = await stakingContract.methods
+      .GetCurrentStake(accounts[0])
+      .call();
+    setYourStakedBalance(web3.utils.fromWei(result.toString(), "ether"));
+  };
+
+  const NextRewardAmount = async () => {
+    const result = await stakingContract.methods
+      .CalculateDailyReward(accounts[0])
+      .call();
+    setNextRewardAmount(web3.utils.fromWei(result.toString(), "ether"));
+  };
+
+  const NextRewardYield = async () => {
+    const resultNra = await stakingContract.methods
+      .CalculateDailyReward(accounts[0])
+      .call();
+    const resultYsb = await stakingContract.methods
+      .GetCurrentStake(accounts[0])
+      .call();
+
+    setNextRewardYield((resultNra / resultYsb) * 100);
+  };
+
+  const ROIFiveDays = async () => {
+    const resultNra = await stakingContract.methods
+      .CalculateDailyReward(accounts[0])
+      .call();
+    const resultYsb = await stakingContract.methods
+      .GetCurrentStake(accounts[0])
+      .call();
+
+    setNextRewardROIFiveDays(((5 * resultNra) / resultYsb) * 100);
+  };
+
   const switchNetwork = async () => {
     if (window.ethereum && window.ethereum.isConnected) {
       try {
@@ -129,6 +197,20 @@ function MyApp({ Component, pageProps }) {
       }
     }
   };
+
+  useEffect(() => {
+    const init = async () => {
+      TotalStaked();
+      Index();
+      APY();
+      YourBalance();
+      YourStakedBalance();
+      NextRewardAmount();
+      NextRewardYield();
+      ROIFiveDays();
+    };
+    if (tokenContract && stakingContract) init();
+  }, [tokenContract, stakingContract]);
 
   useEffect(() => {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
@@ -224,6 +306,14 @@ function MyApp({ Component, pageProps }) {
         unstake,
         getMaxStaking,
         getMaxUnstaking,
+        totalStaked,
+        index,
+        apy,
+        yourBalance,
+        yourStakedBalance,
+        nextRewardAmount,
+        nextRewardYield,
+        nextRewardROIFiveDays,
       }}
     >
       <Component {...pageProps} />

@@ -28,6 +28,14 @@ export default function Home() {
     unstake,
     getMaxStaking,
     getMaxUnstaking,
+    totalStaked,
+    index,
+    apy,
+    yourBalance,
+    yourStakedBalance,
+    nextRewardAmount,
+    nextRewardYield,
+    nextRewardROIFiveDays,
   } = useContext(PregmaContext);
   const [amount, setAmount] = useState(undefined);
   const [value, setValue] = useState("stake"); // stake || unstake
@@ -72,19 +80,23 @@ export default function Home() {
         <div className="grid lg:grid-cols-3 sm:grid-cols-1 lg:text-center sm:text-start ">
           <div>
             <h1 className="text-2xl text-gray-800 font-medium">APY</h1>
-            <h1 className="text-2xl text-cyan-500 font-medium">200.1%</h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">{apy}%</h1>
           </div>
           <div>
             <h1 className="text-2xl text-gray-800 font-medium">
               Total Value Deposited
             </h1>
-            <h1 className="text-2xl text-cyan-500 font-medium">$60,750,176</h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">
+              {totalStaked} PUMPKIN
+            </h1>
           </div>
           <div>
             <h1 className="text-2xl text-gray-800 font-medium">
               Current Index
             </h1>
-            <h1 className="text-2xl text-cyan-500 font-medium">8.89 PUMPKIN</h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">
+              {index} PUMPKIN
+            </h1>
           </div>
         </div>
       </>
@@ -97,23 +109,23 @@ export default function Home() {
         <div className="mt-6 flex flex-col w-full">
           <div className="flex flex-row w-full justify-between text-xl text-gray-800">
             <p>Your Balance</p>
-            <p>0.0 PUMPKIN</p>
+            <p>{yourBalance} PUMPKIN</p>
           </div>
           <div className="flex flex-row w-full justify-between text-xl text-gray-800">
             <p>Your Staked Balance</p>
-            <p>0 sPUMPKIN</p>
+            <p>{yourStakedBalance} sPUMPKIN</p>
           </div>
           <div className="flex flex-row w-full justify-between text-xl text-gray-800">
             <p>Next Reward Amount</p>
-            <p>0.0 sPUMPKIN</p>
+            <p>{nextRewardAmount} sPUMPKIN</p>
           </div>
           <div className="flex flex-row w-full justify-between text-xl text-gray-800">
             <p>Next Reward Yield</p>
-            <p>0.0972%</p>
+            <p>{nextRewardYield}%</p>
           </div>
           <div className="flex flex-row w-full justify-between text-xl text-gray-800">
             <p>ROI (5-Day Rate)</p>
-            <p>1.4692%</p>
+            <p>{nextRewardROIFiveDays}%</p>
           </div>
         </div>
       </>

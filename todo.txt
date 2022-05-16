@@ -1,0 +1,6 @@
+#1 reset after approvement
+#2 stats
+
+APY: (dailyRewardRate / 100) * 365 * 100
+NextRewardYield: (NextRewardAmount / YourStakedBalance) * 100
+ROI5Days: ((5 * NextRewardAmount) / YourStakedBalance) * 100
