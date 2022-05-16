@@ -209,8 +209,8 @@ function MyApp({ Component, pageProps }) {
       NextRewardYield();
       ROIFiveDays();
     };
-    if (tokenContract && stakingContract) init();
-  }, [tokenContract, stakingContract]);
+    if (accounts.length > 0 && tokenContract && stakingContract) init();
+  }, [accounts, tokenContract, stakingContract]);
 
   useEffect(() => {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
@@ -314,6 +314,16 @@ function MyApp({ Component, pageProps }) {
         nextRewardAmount,
         nextRewardYield,
         nextRewardROIFiveDays,
+        TotalStaked,
+        Index,
+        APY,
+        YourBalance,
+        YourStakedBalance,
+        NextRewardAmount,
+        NextRewardYield,
+        ROIFiveDays,
+        tokenContract,
+        stakingContract,
       }}
     >
       <Component {...pageProps} />

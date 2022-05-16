@@ -19,6 +19,7 @@ import customTheme from "../config/customTheme";
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
+    accounts,
     AOS,
     connected,
     connectMetaMask,
@@ -36,6 +37,16 @@ export default function Home() {
     nextRewardAmount,
     nextRewardYield,
     nextRewardROIFiveDays,
+    TotalStaked,
+    Index,
+    APY,
+    YourBalance,
+    YourStakedBalance,
+    NextRewardAmount,
+    NextRewardYield,
+    ROIFiveDays,
+    tokenContract,
+    stakingContract,
   } = useContext(PregmaContext);
   const [amount, setAmount] = useState(undefined);
   const [value, setValue] = useState("stake"); // stake || unstake
@@ -53,6 +64,20 @@ export default function Home() {
   useEffect(() => {
     setAmount(undefined);
   }, [value]);
+
+  useEffect(() => {
+    const init = async () => {
+      TotalStaked();
+      Index();
+      APY();
+      YourBalance();
+      YourStakedBalance();
+      NextRewardAmount();
+      NextRewardYield();
+      ROIFiveDays();
+    };
+    if (accounts.length > 0 && tokenContract && stakingContract) init();
+  }, [accounts, tokenContract, stakingContract]);
 
   const handleChange = (event, newValue) => {
     //event.preventDefault();
