@@ -108,37 +108,46 @@ function MyApp({ Component, pageProps }) {
   const TotalStaked = async () => {
     const result = await stakingContract.methods.totalStaked().call();
 
-    setTotalStaked(web3.utils.fromWei(result.toString(), "ether"));
+    setTotalStaked(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(0)
+    );
   };
 
   const Index = async () => {
     const result = await stakingContract.methods.CalculateIndex().call();
-    setIndex(web3.utils.fromWei(result.toString(), "ether"));
+    setIndex(Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2));
   };
 
   const APY = async () => {
     const dailyRewardRate = await stakingContract.methods.RewardFactor().call();
 
-    setApy((dailyRewardRate / 100) * 365 * 100);
+    setApy(Number((dailyRewardRate / 100) * 365 * 100).toFixed(0));
   };
 
   const YourBalance = async () => {
     const result = await tokenContract.methods.balanceOf(accounts[0]).call();
-    setYourBalance(web3.utils.fromWei(result.toString(), "ether"));
+    setYourBalance(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
   };
 
   const YourStakedBalance = async () => {
-    const result = await stakingContract.methods
+    let result = await stakingContract.methods
       .GetCurrentStake(accounts[0])
       .call();
-    setYourStakedBalance(web3.utils.fromWei(result.toString(), "ether"));
+
+    setYourStakedBalance(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
   };
 
   const NextRewardAmount = async () => {
     const result = await stakingContract.methods
       .CalculateDailyReward(accounts[0])
       .call();
-    setNextRewardAmount(web3.utils.fromWei(result.toString(), "ether"));
+    setNextRewardAmount(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
   };
 
   const NextRewardYield = async () => {
@@ -149,7 +158,7 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardYield((resultNra / resultYsb) * 100);
+    setNextRewardYield(Number((resultNra / resultYsb) * 100).toFixed(2));
   };
 
   const ROIFiveDays = async () => {
@@ -160,7 +169,9 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardROIFiveDays(((5 * resultNra) / resultYsb) * 100);
+    setNextRewardROIFiveDays(
+      Number(((5 * resultNra) / resultYsb) * 100).toFixed(2)
+    );
   };
 
   const switchNetwork = async () => {
