@@ -13,6 +13,7 @@ import { PregmaContext } from "../contexts/PregmaContext";
 import { useEffect, useState } from "react";
 import Web3 from "web3";
 import AOS from "aos";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   // web3 hooks
@@ -22,6 +23,8 @@ function MyApp({ Component, pageProps }) {
   const [stakingContract, setStakingContract] = useState(undefined);
   const [tokenContract, setTokenContract] = useState(undefined);
   const [isApproved, setIsApproved] = useState(false);
+  const [web3Http, setWeb3Http] = useState(undefined);
+  const [stakingContractHttp, setStakingContractHttp] = useState(undefined);
 
   const [totalStaked, setTotalStaked] = useState(undefined);
   const [index, setIndex] = useState(undefined);
@@ -32,8 +35,13 @@ function MyApp({ Component, pageProps }) {
   const [nextRewardYield, setNextRewardYield] = useState(undefined);
   const [nextRewardROIFiveDays, setNextRewardROIFiveDays] = useState(undefined);
 
+  const router = useRouter();
+
   const connectMetaMask = async () => {
-    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+    if (
+      window.ethereum &&
+      window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC
+    ) {
       switchNetwork();
     }
     if (window.ethereum && window.ethereum.isConnected) {
@@ -106,22 +114,26 @@ function MyApp({ Component, pageProps }) {
   };
 
   const TotalStaked = async () => {
-    const result = await stakingContract.methods.totalStaked().call();
+    const result = await stakingContractHttp.methods.totalStaked().call();
 
     setTotalStaked(
-      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(0)
+      Number(web3Http.utils.fromWei(result.toString(), "ether")).toFixed(0)
     );
   };
 
   const Index = async () => {
-    const result = await stakingContract.methods.CalculateIndex().call();
-    setIndex(Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2));
+    const result = await stakingContractHttp.methods.CalculateIndex().call();
+    setIndex(
+      Number(web3Http.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
   };
 
   const APY = async () => {
-    const dailyRewardRate = await stakingContract.methods.RewardFactor().call();
+    const dailyRewardRate = await stakingContractHttp.methods
+      .RewardFactor()
+      .call();
 
-    setApy(Number((dailyRewardRate / 100) * 365 * 100).toFixed(0));
+    setApy(Number((dailyRewardRate / 100) * 365).toFixed(0));
   };
 
   const YourBalance = async () => {
@@ -158,7 +170,7 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardYield(Number((resultNra / resultYsb) * 100).toFixed(2));
+    setNextRewardYield(Number(resultNra / resultYsb).toFixed(2));
   };
 
   const ROIFiveDays = async () => {
@@ -169,9 +181,7 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardROIFiveDays(
-      Number(((5 * resultNra) / resultYsb) * 100).toFixed(2)
-    );
+    setNextRewardROIFiveDays(Number((5 * resultNra) / resultYsb).toFixed(2));
   };
 
   const switchNetwork = async () => {
@@ -214,6 +224,12 @@ function MyApp({ Component, pageProps }) {
       TotalStaked();
       Index();
       APY();
+    };
+    if (stakingContractHttp) init();
+  }, [stakingContractHttp]);
+
+  useEffect(() => {
+    const init = async () => {
       YourBalance();
       YourStakedBalance();
       NextRewardAmount();
@@ -224,7 +240,10 @@ function MyApp({ Component, pageProps }) {
   }, [accounts, tokenContract, stakingContract]);
 
   useEffect(() => {
-    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+    if (
+      window.ethereum &&
+      window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC
+    ) {
       switchNetwork();
     } else {
       setIsApproved(false);
@@ -295,6 +314,21 @@ function MyApp({ Component, pageProps }) {
           setConnected(true);
         } else setConnected(false);
       }
+    };
+
+    init();
+  }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      const web3Http = new Web3(CONFIG.RPC);
+      const stakingContractHttp = new web3Http.eth.Contract(
+        stakingABI,
+        CONFIG.STAKING_ADDRESS
+      );
+
+      setWeb3Http(web3Http);
+      setStakingContractHttp(stakingContractHttp);
     };
 
     init();
