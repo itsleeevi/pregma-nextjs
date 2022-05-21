@@ -62,7 +62,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setAmount(undefined);
+    setAmount(0);
   }, [value]);
 
   useEffect(() => {
@@ -382,6 +382,7 @@ export default function Home() {
                                                 onClick={async (e) => {
                                                   e.preventDefault();
                                                   await stake(amount);
+
                                                   setAmount(undefined);
                                                 }}
                                               >

@@ -2,8 +2,9 @@ import "../styles/globals.css";
 import "../styles/style.scss";
 import "aos/dist/aos.css";
 
-import CONFIG from "../config/configTest.json"; // -> for testnet
+//import CONFIG from "../config/configTest.json"; // -> for testnet
 //import CONFIG from "../config/config.json"; // -> for mainnet
+import CONFIG from "../config/configRinkeby.json"; // -> for mainnet
 
 import stakingABI from "../artifacts/Staking.json";
 import tokenABI from "../artifacts/Pumpkin.json";
@@ -14,6 +15,7 @@ import { useEffect, useState } from "react";
 import Web3 from "web3";
 import AOS from "aos";
 import { useRouter } from "next/router";
+import { MAX_AMOUNT, Converter } from "@maticnetwork/maticjs";
 
 function MyApp({ Component, pageProps }) {
   // web3 hooks
@@ -34,6 +36,7 @@ function MyApp({ Component, pageProps }) {
   const [nextRewardAmount, setNextRewardAmount] = useState(undefined);
   const [nextRewardYield, setNextRewardYield] = useState(undefined);
   const [nextRewardROIFiveDays, setNextRewardROIFiveDays] = useState(undefined);
+  const [refresh, setRefresh] = useState(false);
 
   const router = useRouter();
 
@@ -66,11 +69,9 @@ function MyApp({ Component, pageProps }) {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
     }
+
     await tokenContract.methods
-      .approve(
-        CONFIG.STAKING_ADDRESS,
-        await tokenContract.methods.totalSupply().call()
-      )
+      .approve(CONFIG.STAKING_ADDRESS, Converter.toHex(MAX_AMOUNT))
       .send({ from: accounts[0] });
     setIsApproved(true);
   };
@@ -79,9 +80,14 @@ function MyApp({ Component, pageProps }) {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
     }
+    //console.log(web3.utils.toWei(amount.toString(), "ether"));
+
     await stakingContract.methods
       .Stake(web3.utils.toWei(amount.toString(), "ether"))
-      .send({ from: accounts[0] });
+      .send({
+        from: accounts[0],
+      });
+    setRefresh(!refresh);
   };
 
   const unstake = async (amount) => {
@@ -90,7 +96,10 @@ function MyApp({ Component, pageProps }) {
     }
     await stakingContract.methods
       .Unstake(web3.utils.toWei(amount.toString(), "ether"))
-      .send({ from: accounts[0] });
+      .send({
+        from: accounts[0],
+      });
+    setRefresh(!refresh);
   };
 
   const getMaxStaking = async () => {
@@ -106,11 +115,15 @@ function MyApp({ Component, pageProps }) {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
     }
-    const result = await stakingContract.methods
+    const currentStake = await stakingContract.methods
       .GetCurrentStake(accounts[0])
       .call();
+    const fee = await tokenContract.methods.FeePercent().call();
+    const result = Number(currentStake).toFixed(2);
 
-    return web3.utils.fromWei(result.toString(), "ether");
+    return Number(web3.utils.fromWei(currentStake.toString(), "ether")).toFixed(
+      2
+    );
   };
 
   const TotalStaked = async () => {
@@ -145,7 +158,7 @@ function MyApp({ Component, pageProps }) {
 
   const YourStakedBalance = async () => {
     let result = await stakingContract.methods
-      .GetCurrentStake(accounts[0])
+      .CheckStakedBalance(accounts[0])
       .call();
 
     setYourStakedBalance(
@@ -226,7 +239,7 @@ function MyApp({ Component, pageProps }) {
       APY();
     };
     if (stakingContractHttp) init();
-  }, [stakingContractHttp]);
+  }, [stakingContractHttp, refresh]);
 
   useEffect(() => {
     const init = async () => {
@@ -237,7 +250,7 @@ function MyApp({ Component, pageProps }) {
       ROIFiveDays();
     };
     if (accounts.length > 0 && tokenContract && stakingContract) init();
-  }, [accounts, tokenContract, stakingContract]);
+  }, [accounts, tokenContract, stakingContract, refresh]);
 
   useEffect(() => {
     if (
