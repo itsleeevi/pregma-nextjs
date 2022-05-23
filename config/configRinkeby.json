@@ -6,6 +6,6 @@
   "CURRENCY_SYMBOL": "ETH",
   "RPC": "https://speedy-nodes-nyc.moralis.io/4a6cc15939827f0d3ad58ddf/eth/rinkeby",
   "BLOCK_EXPLORER": "https://testnet.ftmscan.com",
-  "STAKING_ADDRESS": "0xaafde753Db264C1283BdcA5C5ed540Ecc111C36D",
-  "TOKEN_ADDRESS": "0x07e5FD87D8e0EDAbD74dDfC428615e4e296562D3"
+  "STAKING_ADDRESS": "0x8E22D65a15fe10376AD31Ed7cDEBBa2d87cf2056",
+  "TOKEN_ADDRESS": "0x6fb2f9bda3b5ca69bcb05084700d53fe4b6b4548"
 }

@@ -183,7 +183,7 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardYield(Number(resultNra / resultYsb).toFixed(2));
+    setNextRewardYield(Number((resultNra / resultYsb) * 100).toFixed(2));
   };
 
   const ROIFiveDays = async () => {
@@ -194,7 +194,9 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardROIFiveDays(Number((5 * resultNra) / resultYsb).toFixed(2));
+    setNextRewardROIFiveDays(
+      Number(((5 * resultNra) / resultYsb) * 100).toFixed(2)
+    );
   };
 
   const switchNetwork = async () => {

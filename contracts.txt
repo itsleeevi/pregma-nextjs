@@ -1,4 +1,7 @@
 Staking:
-https://rinkeby.etherscan.io/address/0xaafde753db264c1283bdca5c5ed540ecc111c36d
+https://rinkeby.etherscan.io/address/0x8e22d65a15fe10376ad31ed7cdebba2d87cf2056
 
 Token:
+https://rinkeby.etherscan.io/address/0x6fb2f9bda3b5ca69bcb05084700d53fe4b6b4548
+
+ 
