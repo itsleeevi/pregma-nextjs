@@ -116,10 +116,8 @@ function MyApp({ Component, pageProps }) {
       switchNetwork();
     }
     const currentStake = await stakingContract.methods
-      .GetCurrentStake(accounts[0])
+      .CheckStakedBalance(accounts[0])
       .call();
-    const fee = await tokenContract.methods.FeePercent().call();
-    const result = Number(currentStake).toFixed(2);
 
     return Number(web3.utils.fromWei(currentStake.toString(), "ether")).toFixed(
       2
