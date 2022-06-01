@@ -64,7 +64,7 @@ function Pools() {
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Content area */}
-        <div className="bg-gray-900  relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="bg-gray-900 relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
           {/*  Site header */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -72,7 +72,7 @@ function Pools() {
             <div className="hidden sm:block">
               <PoolBg />
             </div>
-            <div className="relative flex">
+            <div>
               <div className="max-w mx-auto px-4 sm:px-6 lg:w-8/12 sm:w-11/12">
                 <div className="pb-12 md:pb-20 w-full xs:pt-20">
                   {/* Section header */}
@@ -95,13 +95,9 @@ function Pools() {
                       </p>
                     </div>
                   </div>
-                  {/* Hero image */}
-                  <div>
-                    <div className="flex lg:flex-row xs:flex-col justify-center w-full rounded gap-16 ">
-                      <PoolBox />
-                      <PoolBox />
-                      <PoolBox />
-                    </div>
+
+                  <div className="flex lg:flex-row xs:flex-col justify-center w-full rounded gap-16">
+                    <PoolBox />
                   </div>
                 </div>
               </div>

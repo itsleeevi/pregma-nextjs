@@ -8,6 +8,7 @@ import CONFIG from "../config/configRinkeby.json"; // -> for mainnet
 
 import stakingABI from "../artifacts/Staking.json";
 import tokenABI from "../artifacts/Pumpkin.json";
+import poolsABI from "../artifacts/Pools.json";
 
 import { PregmaContext } from "../contexts/PregmaContext";
 
@@ -24,7 +25,10 @@ function MyApp({ Component, pageProps }) {
   const [web3, setWeb3] = useState(undefined);
   const [stakingContract, setStakingContract] = useState(undefined);
   const [tokenContract, setTokenContract] = useState(undefined);
+  const [depositTokenContract, setDepositTokenContract] = useState(undefined);
+  const [poolContract, setPoolContract] = useState(undefined);
   const [isApproved, setIsApproved] = useState(false);
+  const [isApprovedDeposit, setIsApprovedDeposit] = useState(false);
   const [web3Http, setWeb3Http] = useState(undefined);
   const [stakingContractHttp, setStakingContractHttp] = useState(undefined);
 
@@ -37,6 +41,12 @@ function MyApp({ Component, pageProps }) {
   const [nextRewardYield, setNextRewardYield] = useState(undefined);
   const [nextRewardROIFiveDays, setNextRewardROIFiveDays] = useState(undefined);
   const [refresh, setRefresh] = useState(false);
+
+  // POOL
+  const [rewardAmountPool, setRewardAmountPool] = useState(undefined);
+  const [stakedAmountPool, setStakedAmountPool] = useState(undefined);
+  const [totalStakedPool, setTotalStakedPool] = useState(undefined);
+  const [vaultRewardPool, setVaultRewardPool] = useState(undefined);
 
   const router = useRouter();
 
@@ -80,7 +90,6 @@ function MyApp({ Component, pageProps }) {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
     }
-    //console.log(web3.utils.toWei(amount.toString(), "ether"));
 
     await stakingContract.methods
       .Stake(web3.utils.toWei(amount.toString(), "ether"))
@@ -232,6 +241,107 @@ function MyApp({ Component, pageProps }) {
     }
   };
 
+  // POOLS FUNCTIONS
+
+  const approveDepositToken = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+
+    await depositTokenContract.methods
+      .approve(CONFIG.POOL_ADDRESS, Converter.toHex(MAX_AMOUNT))
+      .send({ from: accounts[0] });
+    setIsApprovedDeposit(true);
+  };
+
+  const stakePool = async (amount) => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+
+    await poolContract.methods
+      .deposit(web3.utils.toWei(amount.toString(), "ether"))
+      .send({
+        from: accounts[0],
+      });
+    setRefresh(!refresh);
+  };
+
+  const unstakePool = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    await poolContract.methods.claimAndWithdraw().send({
+      from: accounts[0],
+    });
+    setRefresh(!refresh);
+  };
+
+  const harvest = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    await poolContract.methods.claim().send({
+      from: accounts[0],
+    });
+    setRefresh(!refresh);
+  };
+
+  const getMaxStakingDeposit = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    const result = await depositTokenContract.methods
+      .balanceOf(accounts[0])
+      .call();
+
+    return web3.utils.fromWei(result.toString(), "ether");
+  };
+
+  const getMaxUnstakingDeposit = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    const currentStake = await poolContract.methods
+      .StakedTokens(accounts[0])
+      .call();
+
+    return Number(web3.utils.fromWei(currentStake.toString(), "ether")).toFixed(
+      2
+    );
+  };
+
+  const rewardPool = async () => {
+    const result = await poolContract.methods
+      .CalculateReward(accounts[0])
+      .call();
+    console.log("res", result);
+    setRewardAmountPool(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const stakedPool = async () => {
+    const result = await poolContract.methods.StakedTokens(accounts[0]).call();
+    console.log(result);
+    setStakedAmountPool(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const totalStakedAmountPool = async () => {
+    const result = await poolContract.methods.totalStaked().call();
+    setTotalStakedPool(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const vaultReward = async () => {
+    const result = await poolContract.methods.VaultReward().call();
+
+    setVaultRewardPool(Number(web3.utils.fromWei(result.toString(), "ether")));
+  };
+
   useEffect(() => {
     const init = async () => {
       TotalStaked();
@@ -253,6 +363,16 @@ function MyApp({ Component, pageProps }) {
   }, [accounts, tokenContract, stakingContract, refresh]);
 
   useEffect(() => {
+    const init = async () => {
+      rewardPool();
+      stakedPool();
+      totalStakedAmountPool();
+      vaultReward();
+    };
+    if (accounts.length > 0 && poolContract) init();
+  }, [accounts, poolContract, refresh]);
+
+  useEffect(() => {
     if (
       window.ethereum &&
       window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC
@@ -266,18 +386,26 @@ function MyApp({ Component, pageProps }) {
           .allowance(accounts[0], CONFIG.STAKING_ADDRESS)
           .call()
           .then((result) => {
-            console.log(result);
             if (Number(result) === 0) {
               setIsApproved(false);
             } else setIsApproved(true);
           });
+
+        await depositTokenContract.methods
+          .allowance(accounts[0], CONFIG.POOL_ADDRESS)
+          .call()
+          .then((result) => {
+            if (Number(result) === 0) {
+              setIsApprovedDeposit(false);
+            } else setIsApprovedDeposit(true);
+          });
       };
 
-      if (tokenContract && accounts.length > 0) {
+      if (tokenContract && depositTokenContract && accounts.length > 0) {
         isApproved();
       }
     }
-  }, [accounts, tokenContract]);
+  }, [accounts, tokenContract, depositTokenContract]);
 
   useEffect(() => {
     AOS.init({
@@ -298,9 +426,16 @@ function MyApp({ Component, pageProps }) {
         tokenABI,
         CONFIG.TOKEN_ADDRESS
       );
+      const depositTokenContract = new web3.eth.Contract(
+        tokenABI,
+        CONFIG.DEPOSIT_TOKEN_ADDRESS
+      );
+      const poolContract = new web3.eth.Contract(poolsABI, CONFIG.POOL_ADDRESS);
 
       setStakingContract(stakingContract);
       setTokenContract(tokenContract);
+      setDepositTokenContract(depositTokenContract);
+      setPoolContract(poolContract);
     };
 
     if (window.ethereum && web3) {
@@ -382,6 +517,19 @@ function MyApp({ Component, pageProps }) {
         ROIFiveDays,
         tokenContract,
         stakingContract,
+        depositTokenContract,
+        poolContract,
+        approveDepositToken,
+        isApprovedDeposit,
+        stakePool,
+        unstakePool,
+        harvest,
+        getMaxStakingDeposit,
+        getMaxUnstakingDeposit,
+        rewardAmountPool,
+        stakedAmountPool,
+        totalStakedPool,
+        vaultRewardPool,
       }}
     >
       <Component {...pageProps} />

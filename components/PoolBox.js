@@ -1,10 +1,54 @@
 import Waterfall from "../public/images/waterfall.png";
-import { ChevronUpIcon } from "@heroicons/react/solid";
+import { ChevronUpIcon, ExternalLinkIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { PregmaContext } from "../contexts/PregmaContext";
+import { Box, Grommet, Stack, TextInput, Text } from "grommet";
+import customTheme from "../config/customTheme";
 
 const PoolBox = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [value, setValue] = useState("stake"); // stake || unstake
+  const [amount, setAmount] = useState(undefined);
+
+  const {
+    isApprovedDeposit,
+    approveDepositToken,
+    stakePool,
+    unstakePool,
+    harvest,
+    getMaxStakingDeposit,
+    getMaxUnstakingDeposit,
+    rewardAmountPool,
+    stakedAmountPool,
+    totalStakedPool,
+    vaultRewardPool,
+    connected,
+    connectMetaMask,
+  } = useContext(PregmaContext);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#1e00ff",
+      },
+      secondary: {
+        light: "#0066ff",
+        main: "#0044ff",
+        contrastText: "#ffcc00",
+      },
+      contrastThreshold: 3,
+      tonalOffset: 0.2,
+    },
+  });
+
+  const handleChange = (event, newValue) => {
+    //event.preventDefault();
+    setValue(newValue);
+  };
 
   return (
     <>
@@ -16,11 +60,11 @@ const PoolBox = () => {
           <Image src={Waterfall} layout="fixed" height="60px" width="60px" />
           <div className="place-end ">
             <h3 className="text-custom-100 font-bold text-2xl tracking-wider">
-              WATERFALL
+              TOKEN
             </h3>
             <div className="flex flex-row gap-1 justify-end">
               <div className="bg-gradient-to-t from-blue-900 to-cyan-500 text-gray-800 font-bold text-center px-1 rounded">
-                900x
+                {vaultRewardPool}x
               </div>
             </div>
           </div>
@@ -28,55 +72,254 @@ const PoolBox = () => {
         <div className="flex flex-row justify-between mt-3">
           <span className="text-custom-100 text-lg tracking-wider">Earn:</span>
           <span className="text-custom-100 text-lg font-medium tracking-wider">
-            WATERFALL
+            PUMPKIN
           </span>
         </div>
-        <div className="flex flex-row justify-between">
-          <span className="text-custom-100 text-2xl tracking-wider">
-            Emissions:
-          </span>
-          <span className="text-custom-100 text-2xl  font-medium tracking-wider">
-            Ended
-          </span>
-        </div>
-        <div className="flex flex-row justify-start mt-3">
-          <span className="text-custom-100 text-xs tracking-wider">
-            WATERFALL EARNED
-          </span>
-        </div>
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-col text-center">
-            <span className="text-custom-100 text-2xl tracking-wider">123</span>
-            <span className="text-custom-100 text-xs tracking-wider">
-              ~$123.124 USD
-            </span>
-          </div>
-          <button className="tracking-wider bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded">
-            Harvest
-          </button>
-        </div>
-        <div className="flex flex-row justify-start mt-3">
-          <span className="text-custom-100 text-xs tracking-wider">
-            WATERFALL STAKED
-          </span>
-        </div>
-        <div className="flex flex-row justify-center">
-          <button
-            className="mt-1 hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white  py-2 px-4 border-2 hover:border-blue-900 border-2 border-transparent rounded"
-            onClick={(e) => {
-              e.preventDefault();
-              //setConnected(true);
-            }}
-          >
-            Approve Contract
-          </button>
-        </div>
-        <div className="flex flex-row text-gray-800 justify-center mt-10">
-          <span className="tracking-widest">Details</span>
+        <div className="flex flex-row justify-between"></div>
+
+        {!connected ? (
+          <>
+            <div className="flex flex-row justify-start mt-3">
+              <span className="text-custom-100 text-xs tracking-wider">
+                PUMPKINS EARNED
+              </span>
+            </div>
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-col text-center">
+                <span className="mt-2 text-custom-100 text-2xl tracking-wider">
+                  0
+                </span>
+                {/* 
+                <span className="text-custom-100 text-xs tracking-wider">
+                  ~$123.124 USD
+                </span>
+                */}
+              </div>
+              {/* 
+              <button className="tracking-wider bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded">
+                Harvest
+              </button> */}
+              <button className="mt-2 cursor-not-allowed tracking-wider bg-transparent text-custom-100 font-semibold py-2 px-4 border-2 border-cyan-500 rounded">
+                Harvest
+              </button>
+            </div>
+            <div className="flex flex-row justify-start mt-3">
+              <span className="text-custom-100 text-xs tracking-wider">
+                TOKEN STAKED
+              </span>
+            </div>
+            <div className="flex flex-row justify-center">
+              <>
+                <button
+                  className="mt-2 bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    connectMetaMask();
+                  }}
+                >
+                  <h1 className="text-lg">Connect Wallet</h1>
+                </button>
+              </>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-row justify-start mt-3">
+              <span className="text-custom-100 text-xs tracking-wider">
+                PUMPKINS EARNED
+              </span>
+            </div>
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-col text-center">
+                <span className="text-custom-100 text-2xl tracking-wider">
+                  {rewardAmountPool}
+                </span>
+              </div>
+
+              <div className="flex flex-col">
+                {Number(rewardAmountPool) > 0 ? (
+                  <>
+                    <button
+                      className="tracking-wider bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await harvest(amount);
+                      }}
+                    >
+                      Harvest
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="mt-2 cursor-not-allowed tracking-wider bg-transparent text-custom-100 font-semibold py-2 px-4 border-2 border-cyan-500 rounded">
+                      Harvest
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-row justify-start mt-3">
+              <span className="text-custom-100 text-xs tracking-wider">
+                TOKEN STAKED
+              </span>
+            </div>
+            {!isApprovedDeposit ? (
+              <>
+                <button
+                  className="mt-2 w-100 py-2 hover:bg-transparent text-sm bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await approveDepositToken();
+                  }}
+                >
+                  Approve Contract
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-col text-center">
+                    <span className="text-custom-100 text-2xl tracking-wider">
+                      {stakedAmountPool}
+                    </span>
+                  </div>
+                  {Number(stakedAmountPool) > 0 ? (
+                    <>
+                      <button
+                        className="w-100 py-2 hover:bg-transparent text-sm bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          await unstakePool();
+                          setAmount(undefined);
+                        }}
+                      >
+                        Harvest & Withdraw
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button className="cursor-not-allowed w-100 py-2   text-sm bg-cyan-500 text-custom-100 font-semibold   px-4 border-2 hover:border-cyan-500 border-transparent rounded">
+                        Harvest & Withdraw
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                <div className="flex flex-row justify-center mt-6 gap-2 rounded">
+                  <Box round="large">
+                    <Grommet
+                      theme={customTheme}
+                      style={{
+                        backgroundColor: "#111",
+                        color: "#fff",
+                      }}
+                      round="large"
+                    >
+                      <div className="rounded  shadow-xl shadow-cyan-500/90">
+                        <Stack anchor="right" round="large">
+                          <Box round="large">
+                            <TextInput
+                              size="xsmall"
+                              placeholder="amount"
+                              value={amount}
+                              onChange={(event) => {
+                                event.preventDefault();
+                                setAmount(event.target.value);
+                              }}
+                              reverse
+                            />
+                          </Box>
+                          <Box
+                            onClick={async () => {
+                              setAmount(await getMaxStakingDeposit());
+                            }}
+                            margin={{
+                              right: "10px",
+                            }}
+                          >
+                            <Text className="font-bold" size="small">
+                              Max
+                            </Text>
+                          </Box>
+                        </Stack>
+                      </div>
+                    </Grommet>
+                  </Box>
+                  <button
+                    className="w-min text-sm hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      await stakePool(amount);
+
+                      setAmount(0);
+                    }}
+                  >
+                    Stake
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        <div
+          className="cursor-pointer flex flex-row text-gray-800 justify-center mt-10"
+          onClick={() => {
+            setOpen(!open);
+          }}
+        >
+          {open ? (
+            <>
+              <span className="tracking-widest">Details</span>
+            </>
+          ) : (
+            <>
+              <span className="tracking-widest">Hide</span>
+            </>
+          )}
+
           <ChevronUpIcon
             className={`${open ? "transform rotate-180" : ""}  max-h-6 max-w-6`}
           />
         </div>
+        {!open ? (
+          <>
+            <div className="flex flex-col gap-0">
+              <div className="flex flex-row justify-between">
+                <span className="pt-6 text-custom-100 text-lg tracking-wider">
+                  Deposit:
+                </span>
+                <span className="pt-6 text-custom-100 text-lg  font-medium tracking-wider">
+                  <a
+                    className="flex flex-row align-center"
+                    href="https://spooky.fi/"
+                  >
+                    <p>Token</p>
+                    <ExternalLinkIcon className="max-h-6 max-w-6" />
+                  </a>
+                </span>
+              </div>
+              <div className="flex flex-row justify-between">
+                <span className="text-custom-100 text-lg tracking-wider">
+                  Total Liquidity:
+                </span>
+                <span className="text-custom-100 text-lg  font-medium tracking-wider">
+                  {totalStakedPool}
+                </span>
+              </div>
+              <div className="flex flex-row justify-between">
+                <a
+                  className="text-cyan-500 text-lg tracking-widest"
+                  href="https://rinkeby.etherscan.io/address/0x784d9de8f43ad2fb782c487e95c9fd7b9b72fb71"
+                >
+                  View on FtmScan
+                </a>
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

@@ -2,6 +2,10 @@ Staking:
 https://rinkeby.etherscan.io/address/0x8e22d65a15fe10376ad31ed7cdebba2d87cf2056
 
 Token:
-https://rinkeby.etherscan.io/address/0x6fb2f9bda3b5ca69bcb05084700d53fe4b6b4548
+https://rinkeby.etherscan.io/address/0xAcC38074F00fb173895f7289d311f0be4490d5D4
 
- 
+Deposit Token:
+https://rinkeby.etherscan.io/address/0x966f119c66f3a44f076d2b952f234595ccbf22c8
+
+Pools:
+https://rinkeby.etherscan.io/address/0x800fa62c89e5368a1ae8ce2868b9c3263f885ea6
