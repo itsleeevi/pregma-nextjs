@@ -96,8 +96,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </svg>
           </button>
           {/* Logo */}
-          <div className="flex justify-center ">
-            <Link href="/" className="block">
+          <div className="cursor-pointer flex justify-center ">
+            <Link href="https://www.inverted.to/" className="block">
               <Image src={logo} width="120px" height="80px" />
             </Link>
           </div>
@@ -242,19 +242,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
           {/* Social Icons*/}
 
-          <div className="flex gap-6 absolute bottom-0 self-center text-xs uppercase text-slate-500 font-semibold pl-3 pb-3">
-            <Image
-              className="cursor-pointer"
-              src={discord}
-              width="40px"
-              height="40px"
-            />
-            <Image
-              className="cursor-pointer"
-              src={twitter}
-              width="40px"
-              height="40px"
-            />
+          <div className="flex gap-6 absolute bottom-0 self-center text-xs uppercase text-slate-500 font-semibold pl-3 pb-3 self-center">
+            <a href="https://docs.inverted.to/">
+              <button className="flex flex-row text-lg hover:bg-transparent bg-gray-900 text-custom-100 font-semibold hover:text-gray-900 px-4 border-2 hover:border-gray-900 border-transparent rounded-sm">
+                <div></div>
+                <div>Docs</div>
+              </button>
+            </a>
           </div>
         </div>
 

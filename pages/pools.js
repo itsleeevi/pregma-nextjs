@@ -74,27 +74,9 @@ function Pools() {
             </div>
             <div>
               <div className="max-w mx-auto px-4 sm:px-6 lg:w-8/12 sm:w-11/12">
-                <div className="pb-12 md:pb-20 w-full xs:pt-20">
+                <div className="mt-12 pb-12 md:pb-20 w-full xs:pt-2">
                   {/* Section header */}
-                  <div className="text-center pb-12 md:pb-6">
-                    <h1
-                      className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
-                      data-aos="zoom-out"
-                    >
-                      <span className="bg-clip-text text-transparent bg-gradient-to-t from-gray-800 to-gray-800">
-                        Pools
-                      </span>
-                    </h1>
-                    <div className="max-w-3xl mx-auto">
-                      <p
-                        className="text-2xl text-custom-100 tracking-wide font-bold lg:mb-12"
-                        data-aos="zoom-out"
-                        data-aos-delay="150"
-                      >
-                        Just stake some tokens to earn. High APR, low risk.
-                      </p>
-                    </div>
-                  </div>
+                  <div className="text-center pb-12 md:pb-6"></div>
 
                   <div className="flex lg:flex-row xs:flex-col justify-center w-full rounded gap-16">
                     <PoolBox />
