@@ -551,15 +551,9 @@ function MyApp({ Component, pageProps }) {
       totalStakedAmountPool15Days();
       vaultReward15Days();
     };
-    if (
-      accounts.length > 0 &&
-      poolContractHttp &&
-      poolContract7DaysHttp &&
-      poolContract15DaysHttp
-    )
+    if (poolContractHttp && poolContract7DaysHttp && poolContract15DaysHttp)
       init();
   }, [
-    accounts,
     poolContractHttp,
     poolContract7DaysHttp,
     poolContract15DaysHttp,
