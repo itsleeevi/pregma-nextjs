@@ -249,7 +249,7 @@ function MyApp({ Component, pageProps }) {
     }
 
     await depositTokenContract.methods
-      .approve(CONFIG.POOL_ADDRESS, Converter.toHex(MAX_AMOUNT))
+      .approve(CONFIG.POOL_ADDRESS_NOLOCK, Converter.toHex(MAX_AMOUNT))
       .send({ from: accounts[0] });
     setIsApprovedDeposit(true);
   };
@@ -392,7 +392,7 @@ function MyApp({ Component, pageProps }) {
           });
 
         await depositTokenContract.methods
-          .allowance(accounts[0], CONFIG.POOL_ADDRESS)
+          .allowance(accounts[0], CONFIG.POOL_ADDRESS_NOLOCK)
           .call()
           .then((result) => {
             if (Number(result) === 0) {
@@ -428,9 +428,12 @@ function MyApp({ Component, pageProps }) {
       );
       const depositTokenContract = new web3.eth.Contract(
         tokenABI,
-        CONFIG.DEPOSIT_TOKEN_ADDRESS
+        CONFIG.DEPOSIT_TOKEN_ADDRESS_NOLOCK
       );
-      const poolContract = new web3.eth.Contract(poolsABI, CONFIG.POOL_ADDRESS);
+      const poolContract = new web3.eth.Contract(
+        poolsABI,
+        CONFIG.POOL_ADDRESS_NOLOCK
+      );
 
       setStakingContract(stakingContract);
       setTokenContract(tokenContract);

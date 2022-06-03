@@ -1,5 +1,9 @@
-import Waterfall from "../public/images/waterfall.png";
-import { ChevronUpIcon, ExternalLinkIcon } from "@heroicons/react/solid";
+import Waterfall from "../public/images/pool_icon.png";
+import {
+  ChevronUpIcon,
+  ExternalLinkIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/solid";
 import Image from "next/image";
 import { useState, useContext } from "react";
 import Tabs from "@mui/material/Tabs";
@@ -57,10 +61,10 @@ const PoolBox = () => {
         data-aos="zoom-in"
       >
         <div className="flex flex-row justify-between gap-10">
-          <Image src={Waterfall} layout="fixed" height="60px" width="60px" />
+          <Image src={Waterfall} layout="fixed" height="43px" width="77px" />
           <div className="place-end ">
             <h3 className="text-custom-100 font-bold text-2xl tracking-wider">
-              TOKEN
+              PUMPKIN
             </h3>
             <div className="flex flex-row gap-1 justify-end">
               <div className="bg-gradient-to-t from-blue-900 to-cyan-500 text-gray-800 font-bold text-center px-1 rounded">
@@ -73,6 +77,14 @@ const PoolBox = () => {
           <span className="text-custom-100 text-lg tracking-wider">Earn:</span>
           <span className="text-custom-100 text-lg font-medium tracking-wider">
             PUMPKIN
+          </span>
+        </div>
+        <div className="flex flex-row justify-between">
+          <span className="text-custom-100 text-lg tracking-wider">
+            Locking Period:
+          </span>
+          <span className="text-custom-100 text-lg font-medium tracking-wider">
+            No Lock
           </span>
         </div>
         <div className="flex flex-row justify-between"></div>
@@ -263,63 +275,51 @@ const PoolBox = () => {
         )}
 
         <div
-          className="cursor-pointer flex flex-row text-gray-800 justify-center mt-10"
+          className="cursor-pointer flex flex-row text-gray-800 justify-center items-center mt-10"
           onClick={() => {
             setOpen(!open);
           }}
         >
-          {open ? (
-            <>
-              <span className="tracking-widest">Details</span>
-            </>
-          ) : (
-            <>
-              <span className="tracking-widest">Hide</span>
-            </>
-          )}
-
-          <ChevronUpIcon
-            className={`${open ? "transform rotate-180" : ""}  max-h-6 max-w-6`}
-          />
-        </div>
-        {!open ? (
           <>
-            <div className="flex flex-col gap-0">
-              <div className="flex flex-row justify-between">
-                <span className="pt-6 text-custom-100 text-lg tracking-wider">
-                  Deposit:
-                </span>
-                <span className="pt-6 text-custom-100 text-lg  font-medium tracking-wider">
-                  <a
-                    className="flex flex-row align-center"
-                    href="https://spooky.fi/"
-                  >
-                    <p>Token</p>
-                    <ExternalLinkIcon className="max-h-6 max-w-6" />
-                  </a>
-                </span>
-              </div>
-              <div className="flex flex-row justify-between">
-                <span className="text-custom-100 text-lg tracking-wider">
-                  Total Liquidity:
-                </span>
-                <span className="text-custom-100 text-lg  font-medium tracking-wider">
-                  {totalStakedPool}
-                </span>
-              </div>
-              <div className="flex flex-row justify-between">
-                <a
-                  className="text-cyan-500 text-lg tracking-widest"
-                  href="https://rinkeby.etherscan.io/address/0x784d9de8f43ad2fb782c487e95c9fd7b9b72fb71"
-                >
-                  View on FtmScan
-                </a>
-              </div>
-            </div>
+            <span className="tracking-widest">Details</span>
+            <InformationCircleIcon className={`  max-h-4 max-w-4`} />
           </>
-        ) : (
-          <></>
-        )}
+        </div>
+
+        <>
+          <div className="flex flex-col gap-0">
+            <div className="flex flex-row justify-between">
+              <span className="pt-6 text-custom-100 text-lg tracking-wider">
+                Deposit:
+              </span>
+              <span className="pt-6 text-custom-100 text-lg  font-medium tracking-wider">
+                <a
+                  className="flex flex-row align-center"
+                  href="https://spooky.fi/"
+                >
+                  <p>Token</p>
+                  <ExternalLinkIcon className="max-h-6 max-w-6" />
+                </a>
+              </span>
+            </div>
+            <div className="flex flex-row justify-between">
+              <span className="text-custom-100 text-lg tracking-wider">
+                Total Liquidity:
+              </span>
+              <span className="text-custom-100 text-lg  font-medium tracking-wider">
+                {totalStakedPool}
+              </span>
+            </div>
+            <div className="flex flex-row justify-between">
+              <a
+                className="text-cyan-500 text-lg tracking-widest"
+                href="https://rinkeby.etherscan.io/address/0x784d9de8f43ad2fb782c487e95c9fd7b9b72fb71"
+              >
+                View on FtmScan
+              </a>
+            </div>
+          </div>
+        </>
       </div>
     </>
   );
