@@ -62,7 +62,7 @@ function Pools() {
         <meta property="twitter:site" content="@InvertedFinance" />
         <meta property="twitter:creator" content="@InvertedFinance" />
       </Head>
-      <div className="bg-gray-900 flex h-screen ">
+      <div className="bg-gray-900 flex h-screen">
         {/* Sidebar */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -77,7 +77,7 @@ function Pools() {
             </div>
             <div>
               <div className="max-w mx-auto px-4 sm:px-6 lg:w-8/12 sm:w-11/12">
-                <div className="mt-20 pb-12 md:pb-20 w-full xs:pt-2">
+                <div className="mt-16 pb-12 md:pb-20 w-full xs:pt-2">
                   <div className="flex lg:flex-row xs:flex-col justify-center rounded gap-16">
                     <PoolBoxNoLock />
                     <PoolBox7Days />

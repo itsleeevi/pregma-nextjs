@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
+import { PregmaContext } from "../contexts/PregmaContext";
 import logo from "../public/images/pregma-yields-logo.png";
 import discord from "../public/images/discord.png";
 import twitter from "../public/images/twitter.png";
 
-function Sidebar({ sidebarOpen, setSidebarOpen }) {
+function Sidebar() {
+  const { setSidebarOpen, sidebarOpen } = useContext(PregmaContext);
   const router = useRouter();
   //const location = router.router.pathname;
   //const { router.pathname } = location;
@@ -15,14 +16,17 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const trigger = useRef(null);
   const sidebar = useRef(null);
 
-  let storedSidebarExpanded = "";
+  /*let storedSidebarExpanded = "";
   if (typeof window !== "undefined")
     storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
 
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
-  );
+  );*/
 
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+
+  /*
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
@@ -57,6 +61,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       document.querySelector("body").classList.remove("sidebar-expanded");
     }
   }, [sidebarExpanded]);
+ */
 
   return (
     <div>
@@ -81,10 +86,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           {/* Close button */}
           <button
             ref={trigger}
-            className="lg:hidden text-custom-100 hover:text-custom-100"
+            className="lg:hidden text-black hover:text-cyan-500"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-controls="sidebar"
-            aria-expanded={sidebarOpen}
           >
             <span className="sr-only">Close sidebar</span>
             <svg

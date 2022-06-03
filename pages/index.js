@@ -215,12 +215,12 @@ export default function Home() {
         <meta property="twitter:site" content="@InvertedFinance" />
         <meta property="twitter:creator" content="@InvertedFinance" />
       </Head>
-      <div className="bg-gray-900 flex h-screen overflow-hidden">
+      <div className="bg-gray-900 flex h-screen">
         {/* Sidebar */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Content area */}
-        <div className="relative flex flex-col flex-1 overflow-y-hidden overflow-x-hidden ">
+        <div className="relative flex flex-col flex-1 overflow-x-hidden ">
           {/*  Site header */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 

@@ -56,7 +56,7 @@ const Bank = () => {
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         {/* Content area */}
-        <div className="relative flex flex-col flex-1 overflow-y-hidden overflow-x-hidden ">
+        <div className="relative flex flex-col flex-1 overflow-x-hidden ">
           {/*  Site header */}
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
@@ -65,14 +65,14 @@ const Bank = () => {
               <div className="max-w mx-auto my-auto px-4">
                 <div className="pb-12 md:pb-20">
                   {/* Section header */}
-                  <div className="flex justify-center text-center mx-auto mt-28 xs:ml-20 xs:mt-32">
+                  <div className="flex justify-center text-center mx-auto mt-32 xs:ml-20 xs:mt-40">
                     <div className=" triangles">
                       <div className="triangle"></div>
                       <div className="triangle"></div>
                       <div className="triangle"></div>
                     </div>
                   </div>
-                  <div className="pb-12 md:pb-20 p-6">
+                  <div className="pb-16 md:pb-20">
                     <div
                       className="grid grid-cols-2 xs:grid-cols-1 gap-4 lg:gap-20 md:grid-cols-4 text-center"
                       data-aos-id-stats

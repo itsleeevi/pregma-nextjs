@@ -19,6 +19,8 @@ import { useRouter } from "next/router";
 import { MAX_AMOUNT, Converter } from "@maticnetwork/maticjs";
 
 function MyApp({ Component, pageProps }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   // web3 hooks
   const [connected, setConnected] = useState(false);
   const [accounts, setAccounts] = useState([]);
@@ -533,6 +535,8 @@ function MyApp({ Component, pageProps }) {
         stakedAmountPool,
         totalStakedPool,
         vaultRewardPool,
+        setSidebarOpen,
+        sidebarOpen,
       }}
     >
       <Component {...pageProps} />

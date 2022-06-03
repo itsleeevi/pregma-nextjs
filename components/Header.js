@@ -1,9 +1,14 @@
 import React, { useState, useContext } from "react";
 import { PregmaContext } from "../contexts/PregmaContext";
 
-function Header({ sidebarOpen, setSidebarOpen }) {
-  const { connectMetaMask, connected, disconnectMetaMask } =
-    useContext(PregmaContext);
+function Header() {
+  const {
+    connectMetaMask,
+    connected,
+    disconnectMetaMask,
+    setSidebarOpen,
+    sidebarOpen,
+  } = useContext(PregmaContext);
 
   return (
     <header className="sticky top-0 bg-gray-900 z-30">
@@ -46,7 +51,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="text-lg">PUMPKIN</span>
+              <span className="lg:text-lg xs:text-sm">PUMPKIN</span>
             </button>
             {connected ? (
               <>
@@ -57,7 +62,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                     disconnectMetaMask();
                   }}
                 >
-                  <h1 className="text-lg">Disconnect</h1>
+                  <h1 className="lg:text-lg xs:text-sm">Disconnect</h1>
                 </button>
               </>
             ) : (
@@ -69,7 +74,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
                     connectMetaMask();
                   }}
                 >
-                  <h1 className="text-lg">Connect Wallet</h1>
+                  <h1 className="lg:text-lg  xs:text-sm">Connect</h1>
                 </button>
               </>
             )}
