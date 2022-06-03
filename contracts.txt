@@ -9,3 +9,9 @@ https://rinkeby.etherscan.io/address/0x966f119c66f3a44f076d2b952f234595ccbf22c8
 
 Pools:
 https://rinkeby.etherscan.io/address/0x800fa62c89e5368a1ae8ce2868b9c3263f885ea6
+
+pool 7 day:
+https://rinkeby.etherscan.io/address/0x2091ebfbd7eb59e78d418a0c1f297a02810b3b51
+
+pool 15 day:
+https://rinkeby.etherscan.io/address/0xc00437675c4dc2cbb36fd0157076894f7614c8e9

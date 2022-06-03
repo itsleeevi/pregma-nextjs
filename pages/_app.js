@@ -31,25 +31,16 @@ function MyApp({ Component, pageProps }) {
   //
   const [depositTokenContract, setDepositTokenContract] = useState(undefined);
   const [poolContract, setPoolContract] = useState(undefined);
-  const [depositTokenContract7Days, setDepositTokenContract7Days] =
-    useState(undefined);
   const [poolContract7Days, setPoolContract7Days] = useState(undefined);
-  const [depositTokenContract15Days, setDepositTokenContract15Days] =
-    useState(undefined);
   const [poolContract15Days, setPoolContract15Days] = useState(undefined);
 
   // http
   const [depositTokenContractHttp, setDepositTokenContractHttp] =
     useState(undefined);
   const [poolContractHttp, setPoolContractHttp] = useState(undefined);
-  const [depositTokenContract7DaysHttp, setDepositTokenContract7DaysHttp] =
-    useState(undefined);
   const [poolContract7DaysHttp, setPoolContract7DaysHttp] = useState(undefined);
-  const [depositTokenContract15DaysHttp, setDepositTokenContract15DaysHttp] =
-    useState(undefined);
   const [poolContract15DaysHttp, setPoolContract15DaysHttp] =
     useState(undefined);
-
   const [isApproved, setIsApproved] = useState(false);
   const [isApprovedDeposit, setIsApprovedDeposit] = useState(false);
   const [web3Http, setWeb3Http] = useState(undefined);
@@ -70,6 +61,18 @@ function MyApp({ Component, pageProps }) {
   const [stakedAmountPool, setStakedAmountPool] = useState(undefined);
   const [totalStakedPool, setTotalStakedPool] = useState(undefined);
   const [vaultRewardPool, setVaultRewardPool] = useState(undefined);
+
+  const [rewardAmountPool7Days, setRewardAmountPool7Days] = useState(undefined);
+  const [stakedAmountPool7Days, setStakedAmountPool7Days] = useState(undefined);
+  const [totalStakedPool7Days, setTotalStakedPool7Days] = useState(undefined);
+  const [vaultRewardPool7Days, setVaultRewardPool7Days] = useState(undefined);
+
+  const [rewardAmountPool15Days, setRewardAmountPool15Days] =
+    useState(undefined);
+  const [stakedAmountPool15Days, setStakedAmountPool15Days] =
+    useState(undefined);
+  const [totalStakedPool15Days, setTotalStakedPool15Days] = useState(undefined);
+  const [vaultRewardPool15Days, setVaultRewardPool15Days] = useState(undefined);
 
   const router = useRouter();
 
@@ -277,12 +280,49 @@ function MyApp({ Component, pageProps }) {
     setIsApprovedDeposit(true);
   };
 
+  const getMaxStakingDeposit = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    const result = await depositTokenContract.methods
+      .balanceOf(accounts[0])
+      .call();
+
+    return web3.utils.fromWei(result.toString(), "ether");
+  };
+
   const stakePool = async (amount) => {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
     }
 
     await poolContract.methods
+      .deposit(web3.utils.toWei(amount.toString(), "ether"))
+      .send({
+        from: accounts[0],
+      });
+    setRefresh(!refresh);
+  };
+
+  const stakePool7Days = async (amount) => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+
+    await poolContract7Days.methods
+      .deposit(web3.utils.toWei(amount.toString(), "ether"))
+      .send({
+        from: accounts[0],
+      });
+    setRefresh(!refresh);
+  };
+
+  const stakePool15Days = async (amount) => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+
+    await poolContract15Days.methods
       .deposit(web3.utils.toWei(amount.toString(), "ether"))
       .send({
         from: accounts[0],
@@ -300,6 +340,26 @@ function MyApp({ Component, pageProps }) {
     setRefresh(!refresh);
   };
 
+  const unstakePool7Days = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    await poolContract7Days.methods.claimAndWithdraw().send({
+      from: accounts[0],
+    });
+    setRefresh(!refresh);
+  };
+
+  const unstakePool15Days = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    await poolContract15Days.methods.claimAndWithdraw().send({
+      from: accounts[0],
+    });
+    setRefresh(!refresh);
+  };
+
   const harvest = async () => {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
@@ -310,15 +370,24 @@ function MyApp({ Component, pageProps }) {
     setRefresh(!refresh);
   };
 
-  const getMaxStakingDeposit = async () => {
+  const harvest7Days = async () => {
     if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
       switchNetwork();
     }
-    const result = await depositTokenContract.methods
-      .balanceOf(accounts[0])
-      .call();
+    await poolContract7Days.methods.claim().send({
+      from: accounts[0],
+    });
+    setRefresh(!refresh);
+  };
 
-    return web3.utils.fromWei(result.toString(), "ether");
+  const harvest15Days = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+    await poolContract15Days.methods.claim().send({
+      from: accounts[0],
+    });
+    setRefresh(!refresh);
   };
 
   const getMaxUnstakingDeposit = async () => {
@@ -344,10 +413,50 @@ function MyApp({ Component, pageProps }) {
     );
   };
 
+  const rewardPool7Days = async () => {
+    const result = await poolContract7Days.methods
+      .CalculateReward(accounts[0])
+      .call();
+    console.log("res", result);
+    setRewardAmountPool7Days(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const rewardPool15Days = async () => {
+    const result = await poolContract15Days.methods
+      .CalculateReward(accounts[0])
+      .call();
+    console.log("res", result);
+    setRewardAmountPool15Days(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
   const stakedPool = async () => {
     const result = await poolContract.methods.StakedTokens(accounts[0]).call();
     console.log(result);
     setStakedAmountPool(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const stakedPool7Days = async () => {
+    const result = await poolContract7Days.methods
+      .StakedTokens(accounts[0])
+      .call();
+    console.log(result);
+    setStakedAmountPool7Days(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const stakedPool15Days = async () => {
+    const result = await poolContract15Days.methods
+      .StakedTokens(accounts[0])
+      .call();
+    console.log(result);
+    setStakedAmountPool15Days(
       Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
     );
   };
@@ -359,10 +468,40 @@ function MyApp({ Component, pageProps }) {
     );
   };
 
+  const totalStakedAmountPool7Days = async () => {
+    const result = await poolContract7DaysHttp.methods.totalStaked().call();
+    setTotalStakedPool7Days(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
+  const totalStakedAmountPool15Days = async () => {
+    const result = await poolContract15DaysHttp.methods.totalStaked().call();
+    setTotalStakedPool15Days(
+      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+    );
+  };
+
   const vaultReward = async () => {
     const result = await poolContractHttp.methods.VaultReward().call();
 
     setVaultRewardPool(Number(web3.utils.fromWei(result.toString(), "ether")));
+  };
+
+  const vaultReward7Days = async () => {
+    const result = await poolContract7DaysHttp.methods.VaultReward().call();
+
+    setVaultRewardPool7Days(
+      Number(web3.utils.fromWei(result.toString(), "ether"))
+    );
+  };
+
+  const vaultReward15Days = async () => {
+    const result = await poolContract15DaysHttp.methods.VaultReward().call();
+
+    setVaultRewardPool15Days(
+      Number(web3.utils.fromWei(result.toString(), "ether"))
+    );
   };
 
   useEffect(() => {
@@ -389,11 +528,43 @@ function MyApp({ Component, pageProps }) {
     const init = async () => {
       rewardPool();
       stakedPool();
+      rewardPool7Days();
+      stakedPool7Days();
+      rewardPool15Days();
+      stakedPool15Days();
+    };
+    if (
+      accounts.length > 0 &&
+      poolContract &&
+      poolContract7Days &&
+      poolContract15Days
+    )
+      init();
+  }, [accounts, poolContract, poolContract7Days, poolContract15Days, refresh]);
+
+  useEffect(() => {
+    const init = async () => {
       totalStakedAmountPool();
       vaultReward();
+      totalStakedAmountPool7Days();
+      vaultReward7Days();
+      totalStakedAmountPool15Days();
+      vaultReward15Days();
     };
-    if (accounts.length > 0 && poolContract) init();
-  }, [accounts, poolContract, refresh]);
+    if (
+      accounts.length > 0 &&
+      poolContractHttp &&
+      poolContract7DaysHttp &&
+      poolContract15DaysHttp
+    )
+      init();
+  }, [
+    accounts,
+    poolContractHttp,
+    poolContract7DaysHttp,
+    poolContract15DaysHttp,
+    refresh,
+  ]);
 
   useEffect(() => {
     if (
@@ -457,17 +628,9 @@ function MyApp({ Component, pageProps }) {
         poolsABI,
         CONFIG.POOL_ADDRESS_NOLOCK
       );
-      const depositTokenContract7Days = new web3.eth.Contract(
-        tokenABI,
-        CONFIG.DEPOSIT_TOKEN_ADDRESS_7DAYS
-      );
       const poolContract7Days = new web3.eth.Contract(
         poolsABI,
         CONFIG.POOL_ADDRESS_7DAYS
-      );
-      const depositTokenContract15Days = new web3.eth.Contract(
-        tokenABI,
-        CONFIG.DEPOSIT_TOKEN_ADDRESS_15DAYS
       );
       const poolContract15Days = new web3.eth.Contract(
         poolsABI,
@@ -478,9 +641,7 @@ function MyApp({ Component, pageProps }) {
       setTokenContract(tokenContract);
       setDepositTokenContract(depositTokenContract);
       setPoolContract(poolContract);
-      setDepositTokenContract7Days(depositTokenContract7Days);
       setPoolContract7Days(poolContract7Days);
-      setDepositTokenContract15Days(depositTokenContract15Days);
       setPoolContract15Days(poolContract15Days);
     };
 
@@ -499,17 +660,9 @@ function MyApp({ Component, pageProps }) {
         poolsABI,
         CONFIG.POOL_ADDRESS_NOLOCK
       );
-      const depositTokenContract7DaysHttp = new web3Http.eth.Contract(
-        tokenABI,
-        CONFIG.DEPOSIT_TOKEN_ADDRESS_7DAYS
-      );
       const poolContract7DaysHttp = new web3Http.eth.Contract(
         poolsABI,
         CONFIG.POOL_ADDRESS_7DAYS
-      );
-      const depositTokenContract15DaysHttp = new web3Http.eth.Contract(
-        tokenABI,
-        CONFIG.DEPOSIT_TOKEN_ADDRESS_15DAYS
       );
       const poolContract15DaysHttp = new web3Http.eth.Contract(
         poolsABI,
@@ -518,9 +671,7 @@ function MyApp({ Component, pageProps }) {
 
       setDepositTokenContractHttp(depositTokenContractHttp);
       setPoolContractHttp(poolContractHttp);
-      setDepositTokenContract7DaysHttp(depositTokenContract7DaysHttp);
       setPoolContract7DaysHttp(poolContract7DaysHttp);
-      setDepositTokenContract15DaysHttp(depositTokenContract15DaysHttp);
       setPoolContract15DaysHttp(poolContract15DaysHttp);
     };
 
@@ -616,6 +767,20 @@ function MyApp({ Component, pageProps }) {
         stakedAmountPool,
         totalStakedPool,
         vaultRewardPool,
+        stakePool7Days,
+        unstakePool7Days,
+        harvest7Days,
+        rewardAmountPool7Days,
+        stakedAmountPool7Days,
+        totalStakedPool7Days,
+        vaultRewardPool7Days,
+        stakePool15Days,
+        unstakePool15Days,
+        harvest15Days,
+        rewardAmountPool15Days,
+        stakedAmountPool15Days,
+        totalStakedPool15Days,
+        vaultRewardPool15Days,
         setSidebarOpen,
         sidebarOpen,
       }}

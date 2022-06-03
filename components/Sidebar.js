@@ -122,6 +122,7 @@ function Sidebar() {
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
                   router.pathname === "/" && "bg-gray-900 text-gray-800"
                 }`}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <Link
                   href="/"
@@ -163,6 +164,7 @@ function Sidebar() {
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
                   router.pathname.includes("pools") && "bg-gray-900"
                 }`}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <Link
                   href="/pools"
@@ -205,6 +207,7 @@ function Sidebar() {
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
                   router.pathname.includes("bank") && "bg-gray-900"
                 }`}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <Link
                   href="/bank"

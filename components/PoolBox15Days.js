@@ -26,10 +26,13 @@ const PoolBox15Days = () => {
     harvest,
     getMaxStakingDeposit,
     getMaxUnstakingDeposit,
-    rewardAmountPool,
-    stakedAmountPool,
-    totalStakedPool,
-    vaultRewardPool,
+    stakePool15Days,
+    unstakePool15Days,
+    harvest15Days,
+    rewardAmountPool15Days,
+    stakedAmountPool15Days,
+    totalStakedPool15Days,
+    vaultRewardPool15Days,
     connected,
     connectMetaMask,
   } = useContext(PregmaContext);
@@ -68,7 +71,7 @@ const PoolBox15Days = () => {
             </h3>
             <div className="flex flex-row gap-1 justify-end">
               <div className="bg-gradient-to-t from-blue-900 to-cyan-500 text-gray-800 font-bold text-center px-1 rounded">
-                {vaultRewardPool}x
+                {vaultRewardPool15Days}x
               </div>
             </div>
           </div>
@@ -117,7 +120,7 @@ const PoolBox15Days = () => {
             </div>
             <div className="flex flex-row justify-start mt-3">
               <span className="text-custom-100 text-xs tracking-wider">
-                TOKEN STAKED
+                FTM STAKED
               </span>
             </div>
             <div className="flex flex-row justify-center">
@@ -144,18 +147,18 @@ const PoolBox15Days = () => {
             <div className="flex flex-row justify-between">
               <div className="flex flex-col text-center">
                 <span className="text-custom-100 text-2xl tracking-wider">
-                  {rewardAmountPool}
+                  {rewardAmountPool15Days}
                 </span>
               </div>
 
               <div className="flex flex-col">
-                {Number(rewardAmountPool) > 0 ? (
+                {Number(rewardAmountPool15Days) > 0 ? (
                   <>
                     <button
                       className="tracking-wider bg-transparent hover:bg-cyan-500 text-custom-100 font-semibold hover:text-white py-2 px-4 border-2 border-cyan-500 hover:border-transparent rounded"
                       onClick={async (e) => {
                         e.preventDefault();
-                        await harvest(amount);
+                        await harvest15Days(amount);
                       }}
                     >
                       Harvest
@@ -172,7 +175,7 @@ const PoolBox15Days = () => {
             </div>
             <div className="flex flex-row justify-start mt-3">
               <span className="text-custom-100 text-xs tracking-wider">
-                TOKEN STAKED
+                FTM STAKED
               </span>
             </div>
             {!isApprovedDeposit ? (
@@ -192,16 +195,16 @@ const PoolBox15Days = () => {
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-col text-center">
                     <span className="text-custom-100 text-2xl tracking-wider">
-                      {stakedAmountPool}
+                      {stakedAmountPool15Days}
                     </span>
                   </div>
-                  {Number(stakedAmountPool) > 0 ? (
+                  {Number(stakedAmountPool15Days) > 0 ? (
                     <>
                       <button
                         className="w-100 py-2 hover:bg-transparent text-sm bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
                         onClick={async (e) => {
                           e.preventDefault();
-                          await unstakePool();
+                          await unstakePool15Days();
                           setAmount(undefined);
                         }}
                       >
@@ -261,7 +264,7 @@ const PoolBox15Days = () => {
                     className="w-min text-sm hover:bg-transparent bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
                     onClick={async (e) => {
                       e.preventDefault();
-                      await stakePool(amount);
+                      await stakePool15Days(amount);
 
                       setAmount(0);
                     }}
@@ -297,7 +300,7 @@ const PoolBox15Days = () => {
                   className="flex flex-row align-center"
                   href="https://spooky.fi/"
                 >
-                  <p>Token</p>
+                  <p>FTM</p>
                   <ExternalLinkIcon className="max-h-6 max-w-6" />
                 </a>
               </span>
@@ -307,7 +310,7 @@ const PoolBox15Days = () => {
                 Total Liquidity:
               </span>
               <span className="text-custom-100 text-lg  font-medium tracking-wider">
-                {totalStakedPool}
+                {totalStakedPool15Days}
               </span>
             </div>
             <div className="flex flex-row justify-between">

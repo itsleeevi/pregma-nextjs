@@ -117,7 +117,7 @@ const PoolBox = () => {
             </div>
             <div className="flex flex-row justify-start mt-3">
               <span className="text-custom-100 text-xs tracking-wider">
-                TOKEN STAKED
+                FTM STAKED
               </span>
             </div>
             <div className="flex flex-row justify-center">
@@ -172,7 +172,7 @@ const PoolBox = () => {
             </div>
             <div className="flex flex-row justify-start mt-3">
               <span className="text-custom-100 text-xs tracking-wider">
-                TOKEN STAKED
+                FTM STAKED
               </span>
             </div>
             {!isApprovedDeposit ? (
@@ -297,7 +297,7 @@ const PoolBox = () => {
                   className="flex flex-row align-center"
                   href="https://spooky.fi/"
                 >
-                  <p>Token</p>
+                  <p>FTM</p>
                   <ExternalLinkIcon className="max-h-6 max-w-6" />
                 </a>
               </span>
