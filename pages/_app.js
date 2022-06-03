@@ -27,8 +27,29 @@ function MyApp({ Component, pageProps }) {
   const [web3, setWeb3] = useState(undefined);
   const [stakingContract, setStakingContract] = useState(undefined);
   const [tokenContract, setTokenContract] = useState(undefined);
+
+  //
   const [depositTokenContract, setDepositTokenContract] = useState(undefined);
   const [poolContract, setPoolContract] = useState(undefined);
+  const [depositTokenContract7Days, setDepositTokenContract7Days] =
+    useState(undefined);
+  const [poolContract7Days, setPoolContract7Days] = useState(undefined);
+  const [depositTokenContract15Days, setDepositTokenContract15Days] =
+    useState(undefined);
+  const [poolContract15Days, setPoolContract15Days] = useState(undefined);
+
+  // http
+  const [depositTokenContractHttp, setDepositTokenContractHttp] =
+    useState(undefined);
+  const [poolContractHttp, setPoolContractHttp] = useState(undefined);
+  const [depositTokenContract7DaysHttp, setDepositTokenContract7DaysHttp] =
+    useState(undefined);
+  const [poolContract7DaysHttp, setPoolContract7DaysHttp] = useState(undefined);
+  const [depositTokenContract15DaysHttp, setDepositTokenContract15DaysHttp] =
+    useState(undefined);
+  const [poolContract15DaysHttp, setPoolContract15DaysHttp] =
+    useState(undefined);
+
   const [isApproved, setIsApproved] = useState(false);
   const [isApprovedDeposit, setIsApprovedDeposit] = useState(false);
   const [web3Http, setWeb3Http] = useState(undefined);
@@ -332,14 +353,14 @@ function MyApp({ Component, pageProps }) {
   };
 
   const totalStakedAmountPool = async () => {
-    const result = await poolContract.methods.totalStaked().call();
+    const result = await poolContractHttp.methods.totalStaked().call();
     setTotalStakedPool(
       Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
     );
   };
 
   const vaultReward = async () => {
-    const result = await poolContract.methods.VaultReward().call();
+    const result = await poolContractHttp.methods.VaultReward().call();
 
     setVaultRewardPool(Number(web3.utils.fromWei(result.toString(), "ether")));
   };
@@ -436,11 +457,71 @@ function MyApp({ Component, pageProps }) {
         poolsABI,
         CONFIG.POOL_ADDRESS_NOLOCK
       );
+      const depositTokenContract7Days = new web3.eth.Contract(
+        tokenABI,
+        CONFIG.DEPOSIT_TOKEN_ADDRESS_7DAYS
+      );
+      const poolContract7Days = new web3.eth.Contract(
+        poolsABI,
+        CONFIG.POOL_ADDRESS_7DAYS
+      );
+      const depositTokenContract15Days = new web3.eth.Contract(
+        tokenABI,
+        CONFIG.DEPOSIT_TOKEN_ADDRESS_15DAYS
+      );
+      const poolContract15Days = new web3.eth.Contract(
+        poolsABI,
+        CONFIG.POOL_ADDRESS_15DAYS
+      );
 
       setStakingContract(stakingContract);
       setTokenContract(tokenContract);
       setDepositTokenContract(depositTokenContract);
       setPoolContract(poolContract);
+      setDepositTokenContract7Days(depositTokenContract7Days);
+      setPoolContract7Days(poolContract7Days);
+      setDepositTokenContract15Days(depositTokenContract15Days);
+      setPoolContract15Days(poolContract15Days);
+    };
+
+    if (window.ethereum && web3) {
+      init();
+    }
+  }, [web3]);
+
+  useEffect(() => {
+    const init = async () => {
+      const depositTokenContractHttp = new web3Http.eth.Contract(
+        tokenABI,
+        CONFIG.DEPOSIT_TOKEN_ADDRESS_NOLOCK
+      );
+      const poolContractHttp = new web3Http.eth.Contract(
+        poolsABI,
+        CONFIG.POOL_ADDRESS_NOLOCK
+      );
+      const depositTokenContract7DaysHttp = new web3Http.eth.Contract(
+        tokenABI,
+        CONFIG.DEPOSIT_TOKEN_ADDRESS_7DAYS
+      );
+      const poolContract7DaysHttp = new web3Http.eth.Contract(
+        poolsABI,
+        CONFIG.POOL_ADDRESS_7DAYS
+      );
+      const depositTokenContract15DaysHttp = new web3Http.eth.Contract(
+        tokenABI,
+        CONFIG.DEPOSIT_TOKEN_ADDRESS_15DAYS
+      );
+      const poolContract15DaysHttp = new web3Http.eth.Contract(
+        poolsABI,
+        CONFIG.POOL_ADDRESS_15DAYS
+      );
+
+      setDepositTokenContractHttp(depositTokenContractHttp);
+      setPoolContractHttp(poolContractHttp);
+      setDepositTokenContract7DaysHttp(depositTokenContract7DaysHttp);
+      setPoolContract7DaysHttp(poolContract7DaysHttp);
+      setDepositTokenContract15DaysHttp(depositTokenContract15DaysHttp);
+      setPoolContract15DaysHttp(poolContract15DaysHttp);
     };
 
     if (window.ethereum && web3) {
