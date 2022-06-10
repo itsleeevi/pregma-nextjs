@@ -1,17 +1,17 @@
 Staking:
-https://rinkeby.etherscan.io/address/0x8e22d65a15fe10376ad31ed7cdebba2d87cf2056
+https://rinkeby.etherscan.io/address/0x6b96f539aae411e686755af9a4e714643a503f8e
 
 Token:
-https://rinkeby.etherscan.io/address/0xAcC38074F00fb173895f7289d311f0be4490d5D4
+https://rinkeby.etherscan.io/address/0xfd07caa87d9e25032141878fbb82ed2ac54916ed 
 
 Deposit Token:
-https://rinkeby.etherscan.io/address/0x966f119c66f3a44f076d2b952f234595ccbf22c8
+https://rinkeby.etherscan.io/token/0x65130d9300e3f2825fc06af56aab5ae960a32213 
 
-Pools:
-https://rinkeby.etherscan.io/address/0x800fa62c89e5368a1ae8ce2868b9c3263f885ea6
+Pools no lock:
+https://rinkeby.etherscan.io/address/0x52a037EEe86b8432575b4BDC18Dc26C3E19DC631 
 
 pool 7 day:
-https://rinkeby.etherscan.io/address/0x2091ebfbd7eb59e78d418a0c1f297a02810b3b51
+https://rinkeby.etherscan.io/address/0xc3b78fb4c15f28fbd69132f0455339b3d8e270bc
 
 pool 15 day:
-https://rinkeby.etherscan.io/address/0xc00437675c4dc2cbb36fd0157076894f7614c8e9
+https://rinkeby.etherscan.io/address/0x70d5fcf314d6691416e5748d4ac072d939ee6b18 

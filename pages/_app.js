@@ -43,6 +43,8 @@ function MyApp({ Component, pageProps }) {
     useState(undefined);
   const [isApproved, setIsApproved] = useState(false);
   const [isApprovedDeposit, setIsApprovedDeposit] = useState(false);
+  const [isApprovedDeposit7Days, setIsApprovedDeposit7Days] = useState(false);
+  const [isApprovedDeposit15Days, setIsApprovedDeposit15Days] = useState(false);
   const [web3Http, setWeb3Http] = useState(undefined);
   const [stakingContractHttp, setStakingContractHttp] = useState(undefined);
 
@@ -278,6 +280,28 @@ function MyApp({ Component, pageProps }) {
       .approve(CONFIG.POOL_ADDRESS_NOLOCK, Converter.toHex(MAX_AMOUNT))
       .send({ from: accounts[0] });
     setIsApprovedDeposit(true);
+  };
+
+  const approveDepositToken7Days = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+
+    await depositTokenContract.methods
+      .approve(CONFIG.POOL_ADDRESS_7DAYS, Converter.toHex(MAX_AMOUNT))
+      .send({ from: accounts[0] });
+    setIsApprovedDeposit7Days(true);
+  };
+
+  const approveDepositToken15Days = async () => {
+    if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+      switchNetwork();
+    }
+
+    await depositTokenContract.methods
+      .approve(CONFIG.POOL_ADDRESS_15DAYS, Converter.toHex(MAX_AMOUNT))
+      .send({ from: accounts[0] });
+    setIsApprovedDeposit15Days(true);
   };
 
   const getMaxStakingDeposit = async () => {
@@ -587,6 +611,24 @@ function MyApp({ Component, pageProps }) {
               setIsApprovedDeposit(false);
             } else setIsApprovedDeposit(true);
           });
+
+        await depositTokenContract.methods
+          .allowance(accounts[0], CONFIG.POOL_ADDRESS_7DAYS)
+          .call()
+          .then((result) => {
+            if (Number(result) === 0) {
+              setIsApprovedDeposit7Days(false);
+            } else setIsApprovedDeposit7Days(true);
+          });
+
+        await depositTokenContract.methods
+          .allowance(accounts[0], CONFIG.POOL_ADDRESS_15DAYS)
+          .call()
+          .then((result) => {
+            if (Number(result) === 0) {
+              setIsApprovedDeposit15Days(false);
+            } else setIsApprovedDeposit15Days(true);
+          });
       };
 
       if (tokenContract && depositTokenContract && accounts.length > 0) {
@@ -751,7 +793,11 @@ function MyApp({ Component, pageProps }) {
         depositTokenContract,
         poolContract,
         approveDepositToken,
+        approveDepositToken7Days,
+        approveDepositToken15Days,
         isApprovedDeposit,
+        isApprovedDeposit7Days,
+        isApprovedDeposit15Days,
         stakePool,
         unstakePool,
         harvest,

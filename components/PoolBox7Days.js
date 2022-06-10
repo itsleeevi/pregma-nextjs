@@ -35,6 +35,8 @@ const PoolBox7Days = () => {
     vaultRewardPool7Days,
     connected,
     connectMetaMask,
+    isApprovedDeposit7Days,
+    approveDepositToken7Days,
   } = useContext(PregmaContext);
 
   const theme = createTheme({
@@ -115,12 +117,12 @@ const PoolBox7Days = () => {
                 Harvest
               </button> */}
               <button className="mt-2 cursor-not-allowed tracking-wider bg-transparent text-custom-100 font-semibold py-2 px-4 border-2 border-cyan-500 rounded">
-                Harvest
+                Claim
               </button>
             </div>
             <div className="flex flex-row justify-start mt-3">
               <span className="text-custom-100 text-xs tracking-wider">
-                FTM STAKED
+                spLP STAKED
               </span>
             </div>
             <div className="flex flex-row justify-center">
@@ -161,13 +163,13 @@ const PoolBox7Days = () => {
                         await harvest7Days(amount);
                       }}
                     >
-                      Harvest
+                      Claim
                     </button>
                   </>
                 ) : (
                   <>
                     <button className="mt-2 cursor-not-allowed tracking-wider bg-transparent text-custom-100 font-semibold py-2 px-4 border-2 border-cyan-500 rounded">
-                      Harvest
+                      Claim
                     </button>
                   </>
                 )}
@@ -175,16 +177,16 @@ const PoolBox7Days = () => {
             </div>
             <div className="flex flex-row justify-start mt-3">
               <span className="text-custom-100 text-xs tracking-wider">
-                FTM STAKED
+                spLP STAKED
               </span>
             </div>
-            {!isApprovedDeposit ? (
+            {!isApprovedDeposit7Days ? (
               <>
                 <button
                   className="mt-2 w-100 py-2 hover:bg-transparent text-sm bg-cyan-500 text-custom-100 font-semibold hover:text-white px-4 border-2 hover:border-cyan-500 border-transparent rounded"
                   onClick={async (e) => {
                     e.preventDefault();
-                    await approveDepositToken();
+                    await approveDepositToken7Days();
                   }}
                 >
                   Approve Contract
@@ -208,13 +210,13 @@ const PoolBox7Days = () => {
                           setAmount(undefined);
                         }}
                       >
-                        Harvest & Withdraw
+                        Claim & Unstake
                       </button>
                     </>
                   ) : (
                     <>
                       <button className="cursor-not-allowed w-100 py-2   text-sm bg-cyan-500 text-custom-100 font-semibold   px-4 border-2 hover:border-cyan-500 border-transparent rounded">
-                        Harvest & Withdraw
+                        Claim & Unstake
                       </button>
                     </>
                   )}
@@ -278,7 +280,7 @@ const PoolBox7Days = () => {
         )}
 
         <div
-          className="cursor-pointer flex flex-row text-gray-800 justify-center items-center mt-10"
+          className="flex flex-row text-gray-800 justify-center items-center mt-10"
           onClick={() => {
             setOpen(!open);
           }}
@@ -300,7 +302,7 @@ const PoolBox7Days = () => {
                   className="flex flex-row align-center"
                   href="https://spooky.fi/"
                 >
-                  <p>FTM</p>
+                  <p>spLP</p>
                   <ExternalLinkIcon className="max-h-6 max-w-6" />
                 </a>
               </span>

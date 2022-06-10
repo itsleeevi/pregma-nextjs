@@ -117,7 +117,7 @@ function Sidebar() {
           {/* Pages group */}
           <div>
             <ul className="mt-3">
-              {/* Yields */}
+              {/* Stake */}
               <li
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
                   router.pathname === "/" && "bg-gray-900 text-gray-800"
@@ -132,7 +132,7 @@ function Sidebar() {
                 >
                   <div
                     className={`flex items-center ${
-                      router.pathname.includes("yields") && "text-gray-800"
+                      router.pathname.includes("stake") && "text-gray-800"
                     }`}
                   >
                     <svg
@@ -151,30 +151,30 @@ function Sidebar() {
                     </svg>
                     <span
                       className={`text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
-                        router.pathname.includes("yields") && "text-gray-800"
+                        router.pathname.includes("stake") && "text-gray-800"
                       }`}
                     >
-                      Yields
+                      Stake
                     </span>
                   </div>
                 </Link>
               </li>
-              {/* Pools */}
+              {/* Liquidity */}
               <li
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-                  router.pathname.includes("pools") && "bg-gray-900"
+                  router.pathname.includes("liquidity") && "bg-gray-900"
                 }`}
                 onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <Link
-                  href="/pools"
+                  href="/liquidity"
                   className={`block text-gray-900 truncate transition duration-150 ${
-                    router.pathname.includes("pools") && "text-gray-800"
+                    router.pathname.includes("liquidity") && "text-gray-800"
                   }`}
                 >
                   <div
                     className={`flex items-center ${
-                      router.pathname.includes("pools") && "text-gray-800"
+                      router.pathname.includes("liquidity") && "text-gray-800"
                     }`}
                   >
                     <svg
@@ -194,30 +194,30 @@ function Sidebar() {
 
                     <span
                       className={`text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
-                        router.pathname.includes("pools") && "text-gray-800"
+                        router.pathname.includes("liquidity") && "text-gray-800"
                       }`}
                     >
-                      Pools
+                      Liquidity
                     </span>
                   </div>
                 </Link>
               </li>
-              {/* Bank */}
+              {/* Stats */}
               <li
                 className={`cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
-                  router.pathname.includes("bank") && "bg-gray-900"
+                  router.pathname.includes("stats") && "bg-gray-900"
                 }`}
                 onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <Link
-                  href="/bank"
+                  href="/stats"
                   className={`block text-gray-900 truncate transition duration-150 ${
-                    router.pathname.includes("bank") && "text-gray-800"
+                    router.pathname.includes("stats") && "text-gray-800"
                   }`}
                 >
                   <div
                     className={`flex items-center ${
-                      router.pathname.includes("bank") && "text-gray-800"
+                      router.pathname.includes("stats") && "text-gray-800"
                     }`}
                   >
                     <svg
@@ -236,10 +236,10 @@ function Sidebar() {
                     </svg>
                     <span
                       className={`text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${
-                        router.pathname.includes("bank") && "text-gray-800"
+                        router.pathname.includes("stats") && "text-gray-800"
                       }`}
                     >
-                      Bank
+                      Stats
                     </span>
                   </div>
                 </Link>
