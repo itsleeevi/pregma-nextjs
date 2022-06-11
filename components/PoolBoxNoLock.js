@@ -61,7 +61,7 @@ const PoolBox = () => {
         data-aos="zoom-in"
       >
         <div className="flex flex-row justify-between gap-10">
-          <Image src={Waterfall} layout="fixed" height="43px" width="77px" />
+          <Image src={Waterfall} layout="fixed" height="43px" width="67px" />
           <div className="place-end ">
             <h3 className="text-custom-100 font-bold text-2xl tracking-wider">
               PUMPKIN
