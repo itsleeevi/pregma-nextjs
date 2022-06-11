@@ -286,18 +286,18 @@ const PoolBox7Days = () => {
           }}
         >
           <>
-            <span className="tracking-widest">Details</span>
+            <span className="tracking-widest text-lg">Details</span>
             <InformationCircleIcon className={`  max-h-4 max-w-4`} />
           </>
         </div>
 
         <>
           <div className="flex flex-col gap-0">
-            <div className="flex flex-row justify-between">
-              <span className="pt-6 text-custom-100 text-lg tracking-wider">
+            <div className="pt-1 flex flex-row justify-between">
+              <span className="text-custom-100 text-lg tracking-wider">
                 Deposit:
               </span>
-              <span className="pt-6 text-custom-100 text-lg  font-medium tracking-wider">
+              <span className="text-custom-100 text-lg  font-medium tracking-wider">
                 <a
                   className="flex flex-row align-center"
                   href="https://spooky.fi/"
