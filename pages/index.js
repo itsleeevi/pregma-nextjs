@@ -105,7 +105,9 @@ export default function Home() {
         <div className="grid lg:grid-cols-3 sm:grid-cols-1 lg:text-center sm:text-start ">
           <div>
             <h1 className="text-2xl text-gray-800 font-medium">APY</h1>
-            <h1 className="text-2xl text-cyan-500 font-medium">{apy}%</h1>
+            <h1 className="text-2xl text-cyan-500 font-medium">
+              {/*apy*/}916,474%
+            </h1>
           </div>
           <div>
             <h1 className="text-2xl text-gray-800 font-medium">

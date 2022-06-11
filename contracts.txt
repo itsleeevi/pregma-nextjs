@@ -1,17 +1,17 @@
 Staking:
 https://rinkeby.etherscan.io/address/0x6b96f539aae411e686755af9a4e714643a503f8e
 
-Token:
+Pumpkin:
 https://rinkeby.etherscan.io/address/0xfd07caa87d9e25032141878fbb82ed2ac54916ed 
 
-Deposit Token:
+Lp Token:
 https://rinkeby.etherscan.io/token/0x65130d9300e3f2825fc06af56aab5ae960a32213 
 
-Pools no lock:
+Pool no lock:
 https://rinkeby.etherscan.io/address/0x52a037EEe86b8432575b4BDC18Dc26C3E19DC631 
 
-pool 7 day:
+Pool 7 day:
 https://rinkeby.etherscan.io/address/0xc3b78fb4c15f28fbd69132f0455339b3d8e270bc
 
-pool 15 day:
+Pool 15 day:
 https://rinkeby.etherscan.io/address/0x70d5fcf314d6691416e5748d4ac072d939ee6b18 

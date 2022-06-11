@@ -57,6 +57,7 @@ function MyApp({ Component, pageProps }) {
   const [nextRewardYield, setNextRewardYield] = useState(undefined);
   const [nextRewardROIFiveDays, setNextRewardROIFiveDays] = useState(undefined);
   const [refresh, setRefresh] = useState(false);
+  const [network, setNetwork] = useState(false);
 
   // POOL
   const [rewardAmountPool, setRewardAmountPool] = useState(undefined);
@@ -218,7 +219,7 @@ function MyApp({ Component, pageProps }) {
       .GetCurrentStake(accounts[0])
       .call();
 
-    setNextRewardYield(Number((resultNra / resultYsb) * 100).toFixed(2));
+    setNextRewardYield(Number(((resultNra / resultYsb) * 100) / 96).toFixed(4));
   };
 
   const ROIFiveDays = async () => {
@@ -228,9 +229,9 @@ function MyApp({ Component, pageProps }) {
     const resultYsb = await stakingContract.methods
       .GetCurrentStake(accounts[0])
       .call();
-
+    const bps = resultNra / resultYsb;
     setNextRewardROIFiveDays(
-      Number(((5 * resultNra) / resultYsb) * 100).toFixed(2)
+      Number((Math.pow(1 + bps, 5) - 1) * 100).toFixed(4)
     );
   };
 
@@ -266,6 +267,7 @@ function MyApp({ Component, pageProps }) {
           }
         }
       }
+      setNetwork(!network);
     }
   };
 
@@ -488,35 +490,37 @@ function MyApp({ Component, pageProps }) {
   const totalStakedAmountPool = async () => {
     const result = await poolContractHttp.methods.totalStaked().call();
     setTotalStakedPool(
-      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+      Number(web3Http.utils.fromWei(result.toString(), "ether")).toFixed(2)
     );
   };
 
   const totalStakedAmountPool7Days = async () => {
     const result = await poolContract7DaysHttp.methods.totalStaked().call();
     setTotalStakedPool7Days(
-      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+      Number(web3Http.utils.fromWei(result.toString(), "ether")).toFixed(2)
     );
   };
 
   const totalStakedAmountPool15Days = async () => {
     const result = await poolContract15DaysHttp.methods.totalStaked().call();
     setTotalStakedPool15Days(
-      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+      Number(web3Http.utils.fromWei(result.toString(), "ether")).toFixed(2)
     );
   };
 
   const vaultReward = async () => {
     const result = await poolContractHttp.methods.VaultReward().call();
 
-    setVaultRewardPool(Number(web3.utils.fromWei(result.toString(), "ether")));
+    setVaultRewardPool(
+      Number(web3Http.utils.fromWei(result.toString(), "ether"))
+    );
   };
 
   const vaultReward7Days = async () => {
     const result = await poolContract7DaysHttp.methods.VaultReward().call();
 
     setVaultRewardPool7Days(
-      Number(web3.utils.fromWei(result.toString(), "ether"))
+      Number(web3Http.utils.fromWei(result.toString(), "ether"))
     );
   };
 
@@ -524,7 +528,7 @@ function MyApp({ Component, pageProps }) {
     const result = await poolContract15DaysHttp.methods.VaultReward().call();
 
     setVaultRewardPool15Days(
-      Number(web3.utils.fromWei(result.toString(), "ether"))
+      Number(web3Http.utils.fromWei(result.toString(), "ether"))
     );
   };
 
@@ -717,8 +721,8 @@ function MyApp({ Component, pageProps }) {
   }, [web3]);
 
   useEffect(() => {
-    const init = async () => {
-      if (window.ethereum && window.ethereum.isConnected) {
+    if (window.ethereum && window.ethereum.isConnected) {
+      const init = async () => {
         const accs = await window.ethereum
           .request({
             method: "eth_accounts",
@@ -734,11 +738,15 @@ function MyApp({ Component, pageProps }) {
         if (accs.length > 0) {
           setConnected(true);
         } else setConnected(false);
-      }
-    };
+      };
 
-    init();
-  }, []);
+      if (window.ethereum.networkVersion !== CONFIG.CHAIN_ID_DEC) {
+        switchNetwork();
+      } else {
+        init();
+      }
+    }
+  }, [network]);
 
   useEffect(() => {
     const init = async () => {
