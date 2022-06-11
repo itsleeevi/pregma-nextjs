@@ -160,10 +160,10 @@ export default function Home() {
   const Approval = () => {
     return (
       <>
-        <div className="mt-6 flex flex-row w-full">
+        <div className="mt-6 flex flex-row w-full gap-2">
           <div className="text-gray-800 text-lg leading-none italic text-center justify-center basis-3/4 w-full">
             <p>
-              First time staking PUMPKIN? <br /> Please approve PUMPKIN Yields
+              First time staking PUMPKIN? <br /> Please approve Inverted Finance
               to use your PUMPKIN for staking.
             </p>
           </div>
@@ -246,11 +246,11 @@ export default function Home() {
                           <div className="flex flex-col gap-6">
                             <div className="flex flex-col">
                               <h1 className="text-3xl font-extrabold text-gray-800">
-                                Single Stake v2 (3, 3)
+                                Single Stake (3, 3)
                               </h1>
                               <div className="flex flex-row gap-1 ">
                                 <h6 className="text-xs font-extrabold text-gray-800">
-                                  6 hrs, 30 mins
+                                  15 mins
                                 </h6>
 
                                 <h6 className="text-xs text-gray-800">

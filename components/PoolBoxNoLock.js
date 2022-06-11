@@ -302,14 +302,7 @@ const PoolBox = () => {
                 </a>
               </span>
             </div>
-            <div className="flex flex-row justify-between">
-              <span className="text-custom-100 text-lg tracking-wider">
-                Total Liquidity:
-              </span>
-              <span className="text-custom-100 text-lg  font-medium tracking-wider">
-                {totalStakedPool}
-              </span>
-            </div>
+
             <div className="flex flex-row justify-between">
               <a
                 className="text-cyan-500 text-lg tracking-widest"
