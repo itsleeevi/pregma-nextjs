@@ -57,6 +57,7 @@ function MyApp({ Component, pageProps }) {
   const [nextRewardROIFiveDays, setNextRewardROIFiveDays] = useState(undefined);
   const [refresh, setRefresh] = useState(false);
   const [network, setNetwork] = useState(false);
+  const [staked, setStaked] = useState(false);
 
   // POOL
   const [rewardAmountPool, setRewardAmountPool] = useState(undefined);
@@ -123,8 +124,10 @@ function MyApp({ Component, pageProps }) {
       .Stake(web3.utils.toWei(amount.toString(), "ether"))
       .send({
         from: accounts[0],
+      })
+      .then(() => {
+        setStaked(!staked);
       });
-    setRefresh(!refresh);
   };
 
   const unstake = async (amount) => {
@@ -135,8 +138,10 @@ function MyApp({ Component, pageProps }) {
       .Unstake(web3.utils.toWei(amount.toString(), "ether"))
       .send({
         from: accounts[0],
+      })
+      .then(() => {
+        setStaked(!staked);
       });
-    setRefresh(!refresh);
   };
 
   const getMaxStaking = async () => {
@@ -538,7 +543,7 @@ function MyApp({ Component, pageProps }) {
       APY();
     };
     if (stakingContractHttp) init();
-  }, [stakingContractHttp, refresh]);
+  }, [stakingContractHttp, refresh, staked]);
 
   useEffect(() => {
     const init = async () => {
@@ -549,7 +554,7 @@ function MyApp({ Component, pageProps }) {
       ROIFiveDays();
     };
     if (accounts.length > 0 && tokenContract && stakingContract) init();
-  }, [accounts, tokenContract, stakingContract, refresh]);
+  }, [accounts, tokenContract, stakingContract, staked]);
 
   useEffect(() => {
     const init = async () => {

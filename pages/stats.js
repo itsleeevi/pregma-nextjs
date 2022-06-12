@@ -109,7 +109,7 @@ const Bank = () => {
                           {nFormatter(yourBalance, 1)}
                         </div>
                         <div className="text-gray-400 font-semibold">
-                          <p>Treasury</p>
+                          <p>Balance</p>
                         </div>
                       </div>
                       {/* 2nd item */}
