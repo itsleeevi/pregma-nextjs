@@ -207,7 +207,7 @@ function MyApp({ Component, pageProps }) {
       .CalculateDailyReward(accounts[0])
       .call();
     setNextRewardAmount(
-      Number(web3.utils.fromWei(result.toString(), "ether")).toFixed(2)
+      Number(web3.utils.fromWei(result.toString(), "ether") / 96).toFixed(2)
     );
   };
 
