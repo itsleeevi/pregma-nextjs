@@ -119,7 +119,7 @@ const Bank = () => {
                         data-aos-anchor="[data-aos-id-stats]"
                       >
                         <div className="text-gray-800 font-red-hat-display text-3xl font-extrabold tracking-tighter">
-                          $9.9B
+                          soon
                         </div>
                         <div className="text-gray-400 font-semibold">
                           Market Cap
@@ -132,7 +132,7 @@ const Bank = () => {
                         data-aos-anchor="[data-aos-id-stats]"
                       >
                         <div className="text-gray-800 font-red-hat-display text-3xl font-extrabold tracking-tighter">
-                          $99
+                          soon
                         </div>
                         <div className="text-gray-400 font-semibold">Price</div>
                       </div>
@@ -143,7 +143,7 @@ const Bank = () => {
                         data-aos-anchor="[data-aos-id-stats]"
                       >
                         <div className="text-gray-800 font-red-hat-display text-3xl font-extrabold tracking-tighter ">
-                          999%
+                          soon
                         </div>
                         <div className="text-gray-400 font-semibold">APY</div>
                       </div>

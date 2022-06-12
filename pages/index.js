@@ -252,7 +252,7 @@ export default function Home() {
                               </h1>
                               <div className="flex flex-row gap-1 ">
                                 <h6 className="text-xs font-extrabold text-gray-800">
-                                  15 mins
+                                  in 15 mins
                                 </h6>
 
                                 <h6 className="text-xs text-gray-800">
