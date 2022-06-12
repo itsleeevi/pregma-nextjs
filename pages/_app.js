@@ -2,9 +2,8 @@ import "../styles/globals.css";
 import "../styles/style.scss";
 import "aos/dist/aos.css";
 
-//import CONFIG from "../config/configTest.json"; // -> for testnet
-//import CONFIG from "../config/config.json"; // -> for mainnet
-import CONFIG from "../config/configRinkeby.json"; // -> for mainnet
+import CONFIG from "../config/config.json"; // -> for mainnet
+//import CONFIG from "../config/configRinkeby.json"; // -> for rinkeby
 
 import stakingABI from "../artifacts/Staking.json";
 import tokenABI from "../artifacts/Pumpkin.json";
